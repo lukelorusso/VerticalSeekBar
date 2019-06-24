@@ -1,0 +1,28 @@
+allprojects {
+    repositories {
+        google()
+        jcenter()
+    }
+}
+
+ext {
+
+    // APP VERSION
+    androidVersionCode          = 1
+    androidVersionName          = '1.0.0' // REMEMBER: also update README.md (all instances)
+
+    // ANDROID VERSION
+    androidCompileSdkVersion    = 28
+    androidMinSdkVersion        = 21
+    androidTargetSdkVersion     = 28
+
+    // KOTLIN
+    kotlinStdlib                = "org.jetbrains.kotlin:kotlin-stdlib:${ext.kotlin_version}"
+
+    // ANDROID LIB
+    androidAppCompatXVersion    = '1.0.2'
+    androidXAppCompat           = "androidx.appcompat:appcompat:$androidAppCompatXVersion"
+    cardViewVersion             = '1.0.0'
+    cardView                    = "androidx.cardview:cardview:$cardViewVersion"
+
+}

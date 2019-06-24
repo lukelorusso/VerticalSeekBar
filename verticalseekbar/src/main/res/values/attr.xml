@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="VerticalSeekBar">
+        <attr name="vsb_gradient_start" format="color" />
+        <attr name="vsb_gradient_end" format="color" />
+        <attr name="vsb_progress" format="integer" />
+        <attr name="android:layout_width" />
+        <attr name="android:layout_height" />
+    </declare-styleable>
+
+</resources>

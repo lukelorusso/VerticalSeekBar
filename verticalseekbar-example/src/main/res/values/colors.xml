@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#017500</color>
+    <color name="colorPrimaryDark">#015A00</color>
+    <color name="colorAccent">#ff7301</color>
+    <color name="paperBackground">#f6f6f6</color>
+    <color name="textLabel">#2c343d</color>
+    <color name="line1">#4dd0e1</color>
+    <color name="line2">#9474cd</color>
+    <color name="line3">#f15e90</color>
+    <color name="line4">#f49d56</color>
+</resources>

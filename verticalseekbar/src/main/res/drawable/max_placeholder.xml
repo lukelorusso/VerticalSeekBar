@@ -1,0 +1,18 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item>
+        <shape android:shape="oval">
+            <size
+                    android:width="27dp"
+                    android:height="27dp" />
+            <solid android:color="@android:color/white" />
+        </shape>
+    </item>
+
+    <item android:drawable="@drawable/ic_battery_full"
+          android:top="2dp"
+          android:bottom="2dp"
+          android:left="2dp"
+          android:right="2dp" />
+
+</layer-list>
