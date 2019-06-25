@@ -34,13 +34,15 @@ open class VerticalSeekBar constructor(context: Context, attrs: AttributeSet) : 
     private var minLayoutHeight: Int = 0
     private var maxPlaceholderDrawable: Drawable? = null
     private var minPlaceholderDrawable: Drawable? = null
+    private var drawableCornerRadius: Int = 0
     private var drawableBackgroundDrawable: Drawable? = null
     private var drawableProgressDrawable: Drawable? = null
     private var drawableProgressStartColor: Int = Color.parseColor(DEFAULT_DRAWABLE_PROGRESS_START)
     private var drawableProgressEndColor: Int = Color.parseColor(DEFAULT_DRAWABLE_PROGRESS_END)
     private var thumbContainerColor: Int = Color.WHITE
+    private var thumbContainerCornerRadius: Int = 0
     private var thumbPlaceholderDrawable: Drawable? = null
-    private var drawableWidth = 0
+    private var drawableWidth: Int? = null
     var progress: Int = 50
         set(value) {
             if (field != value) {
@@ -54,34 +56,59 @@ open class VerticalSeekBar constructor(context: Context, attrs: AttributeSet) : 
         init(context, attrs)
     }
 
-    @Suppress("PLUGIN_WARNING")
     private fun init(context: Context, attrs: AttributeSet) {
         inflate(context, R.layout.layout_verticalseekbar, this)
 
         val attributes = context.obtainStyledAttributes(attrs, R.styleable.VerticalSeekBar, 0, 0)
         try {
-            attributes.getLayoutDimension(R.styleable.VerticalSeekBar_android_layout_width, minLayoutWidth).apply {
-                container.layoutParams.width = if (this != -1 && this < minLayoutWidth) minLayoutWidth // wrap_content
-                else this
+            attributes.getLayoutDimension(R.styleable.VerticalSeekBar_android_layout_width, minLayoutWidth).also {
+                container.layoutParams.width = if (it != -1 && it < minLayoutWidth) minLayoutWidth // wrap_content
+                else it
             }
-            attributes.getLayoutDimension(R.styleable.VerticalSeekBar_android_layout_height, minLayoutHeight).apply {
+            attributes.getLayoutDimension(R.styleable.VerticalSeekBar_android_layout_height, minLayoutHeight).also {
                 container.layoutParams.height =
-                    if (this != -1 && this < minLayoutHeight) minLayoutHeight // wrap_content
-                    else this
+                    if (it != -1 && it < minLayoutHeight) minLayoutHeight // wrap_content
+                    else it
             }
-            drawableBackgroundDrawable = attributes.getDrawable(R.styleable.VerticalSeekBar_vsb_drawable_background)
-            drawableProgressDrawable = attributes.getDrawable(R.styleable.VerticalSeekBar_vsb_drawable_progress)
-            minPlaceholderDrawable = attributes.getDrawable(R.styleable.VerticalSeekBar_vsb_min_placeholder_src)
-            maxPlaceholderDrawable = attributes.getDrawable(R.styleable.VerticalSeekBar_vsb_max_placeholder_src)
+            attributes.getDrawable(R.styleable.VerticalSeekBar_vsb_drawable_background)?.also {
+                drawableBackgroundDrawable = it
+            }
+            attributes.getDrawable(R.styleable.VerticalSeekBar_vsb_drawable_progress).also {
+                drawableProgressDrawable = it
+            }
+            attributes.getDrawable(R.styleable.VerticalSeekBar_vsb_min_placeholder_src).also {
+                minPlaceholderDrawable = it
+            }
+            attributes.getDrawable(R.styleable.VerticalSeekBar_vsb_max_placeholder_src).also {
+                maxPlaceholderDrawable = it
+            }
+            drawableCornerRadius = attributes.getLayoutDimension(
+                R.styleable.VerticalSeekBar_vsb_drawable_corner_radius,
+                drawableCornerRadius
+            )
             drawableProgressStartColor =
-                attributes.getColor(R.styleable.VerticalSeekBar_vsb_drawable_progress_gradient_start, drawableProgressStartColor)
+                attributes.getColor(
+                    R.styleable.VerticalSeekBar_vsb_drawable_progress_gradient_start,
+                    drawableProgressStartColor
+                )
             drawableProgressEndColor =
-                attributes.getColor(R.styleable.VerticalSeekBar_vsb_drawable_progress_gradient_end, drawableProgressEndColor)
+                attributes.getColor(
+                    R.styleable.VerticalSeekBar_vsb_drawable_progress_gradient_end,
+                    drawableProgressEndColor
+                )
             thumbContainerColor =
                 attributes.getColor(R.styleable.VerticalSeekBar_vsb_thumb_container_tint, thumbContainerColor)
-            thumbPlaceholderDrawable = attributes.getDrawable(R.styleable.VerticalSeekBar_vsb_thumb_placeholder_src)
-            drawableWidth =
-                attributes.getDimensionPixelSize(R.styleable.VerticalSeekBar_vsb_drawable_width, container.layoutParams.width)
+            thumbContainerCornerRadius = attributes.getLayoutDimension(
+                R.styleable.VerticalSeekBar_vsb_thumb_container_corner_radius,
+                thumbContainerCornerRadius
+            )
+            attributes.getDrawable(R.styleable.VerticalSeekBar_vsb_thumb_placeholder_src).also {
+                thumbPlaceholderDrawable = it
+            }
+            drawableWidth = attributes.getDimensionPixelSize(
+                R.styleable.VerticalSeekBar_vsb_drawable_width,
+                drawableWidth ?: container.layoutParams.width
+            )
             attributes.getInt(R.styleable.VerticalSeekBar_vsb_progress, progress).also {
                 progress = when {
                     it < 0 -> 0
@@ -95,7 +122,7 @@ open class VerticalSeekBar constructor(context: Context, attrs: AttributeSet) : 
         }
 
         // Customizing drawableCardView
-        drawableCardView.layoutParams.width = drawableWidth
+        drawableCardView.layoutParams.width = drawableWidth ?: 0
 
         // Customizing drawableBackground
         drawableBackground.background =
@@ -107,6 +134,10 @@ open class VerticalSeekBar constructor(context: Context, attrs: AttributeSet) : 
             intArrayOf(drawableProgressStartColor, drawableProgressEndColor)
         ).apply { cornerRadius = 0f }
         drawableProgress.background = drawableProgressDrawable
+
+        // Applying card corner radius
+        drawableCardView.radius = drawableCornerRadius.toFloat()
+        thumbCardView.radius = thumbContainerCornerRadius.toFloat()
 
         // Applying custom placeholders
         maxPlaceholder.setImageDrawable(maxPlaceholderDrawable) // can also be null
@@ -152,15 +183,31 @@ open class VerticalSeekBar constructor(context: Context, attrs: AttributeSet) : 
         }
 
         // Here's where the magic happens
-        thumb.setOnTouchListener { thumbView, event ->
+        thumb.setOnTouchListener { thumb, event ->
             val rawY = event.rawY.roundToInt()
             when (event.action and MotionEvent.ACTION_MASK) {
                 MotionEvent.ACTION_DOWN -> { // here we calculate the displacement (yDelta)
-                    yDelta = rawY - (thumbView.layoutParams as LayoutParams).topMargin
+                    yDelta = rawY - (thumb.layoutParams as LayoutParams).topMargin
                 }
                 MotionEvent.ACTION_MOVE -> { // here we update progress
                     val positionY = rawY - yDelta
-                    val fillHeight = height - thumbView.height
+                    val fillHeight = height - thumb.height
+                    when {
+                        positionY in 1 until fillHeight -> progress = 100 - (positionY * 100 / fillHeight)
+                        positionY <= 0 -> progress = 100
+                        positionY >= fillHeight -> progress = 0
+                    }
+                }
+            }
+            true
+        }
+
+        // here we intercept the click on the drawable
+        drawableCardView.setOnTouchListener { drawable, event ->
+            val positionY = event.y.roundToInt()
+            when (event.action and MotionEvent.ACTION_MASK) {
+                MotionEvent.ACTION_DOWN, MotionEvent.ACTION_MOVE -> {
+                    val fillHeight = drawable.measuredHeight
                     when {
                         positionY in 1 until fillHeight -> progress = 100 - (positionY * 100 / fillHeight)
                         positionY <= 0 -> progress = 100

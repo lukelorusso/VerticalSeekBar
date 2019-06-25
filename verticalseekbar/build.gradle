@@ -21,6 +21,7 @@ android {
 
 dependencies {
     implementation kotlinStdlib
+    api cardView
 }
 
 //region Publish to jCenter

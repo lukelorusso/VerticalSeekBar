@@ -27,5 +27,4 @@ dependencies {
     implementation project(':verticalseekbar')
     implementation kotlinStdlib
     implementation androidXAppCompat
-    implementation cardView
 }
