@@ -5,11 +5,11 @@
             <size
                     android:width="27dp"
                     android:height="27dp" />
-            <solid android:color="@android:color/white" />
+            <solid android:color="@color/placeholderBackground" />
         </shape>
     </item>
 
-    <item android:drawable="@drawable/ic_battery_full"
+    <item android:drawable="@drawable/ic_battery_low"
           android:top="2dp"
           android:bottom="2dp"
           android:left="2dp"

@@ -9,10 +9,11 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        mainVerticalSeekBar.progress = 75
         mainVerticalSeekBar.setOnProgressChangeListener { progressValue ->
             mainProgressValue.text = progressValue.toString()
         }
-        mainProgressValue.text = mainVerticalSeekBar.progressValue.toString()
+        mainProgressValue.text = mainVerticalSeekBar.progress.toString()
     }
 
 }
