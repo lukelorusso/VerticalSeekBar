@@ -175,10 +175,10 @@ open class VerticalSeekBar constructor(context: Context, attrs: AttributeSet) : 
             val minPlaceholderHalfHeight = minPlaceholder.measuredHeight / 2
             topMargin = max(thumbCardViewHalfHeight, maxPlaceholderHalfHeight)
             bottomMargin = max(thumbCardViewHalfHeight, minPlaceholderHalfHeight)
-            (maxPlaceholderLayout.layoutParams as LayoutParams).topMargin =
-                thumbCardViewHalfHeight - maxPlaceholderHalfHeight
-            (minPlaceholderLayout.layoutParams as LayoutParams).bottomMargin =
-                thumbCardViewHalfHeight - minPlaceholderHalfHeight
+            (maxPlaceholder.layoutParams as LayoutParams).topMargin = topMargin - maxPlaceholderHalfHeight
+            (maxPlaceholder.layoutParams as LayoutParams).bottomMargin = topMargin - maxPlaceholderHalfHeight
+            (minPlaceholder.layoutParams as LayoutParams).bottomMargin = bottomMargin - minPlaceholderHalfHeight
+            (minPlaceholder.layoutParams as LayoutParams).topMargin = bottomMargin - minPlaceholderHalfHeight
 
         }
 

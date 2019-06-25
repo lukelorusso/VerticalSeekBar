@@ -28,7 +28,7 @@ dependencies {
 def libGroupId = 'com.lukelorusso'
 def libArtifactId = 'verticalseekbar'
 def libVersion = androidVersionName
-def libDesc = 'Simple View to draw lines, circles or text labels'
+def libDesc = 'A nicer, redesigned and vertical SeekBar'
 def libLicenses = ['Apache-2.0']
 def libVCSUrl = 'https://github.com/lukelorusso/verticalseekbar.git'
 
