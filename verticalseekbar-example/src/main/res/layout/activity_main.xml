@@ -22,7 +22,7 @@
         android:layout_width="160dp"
         android:layout_height="280dp"
         android:layout_gravity="center"
-        app:vsb_click_to_set_progress="true"
+        app:vsb_click_to_set_progress="false"
         app:vsb_drawable_corner_radius="15dp"
         app:vsb_drawable_width="15dp"
         app:vsb_drawable_background="#f2f2f2"
