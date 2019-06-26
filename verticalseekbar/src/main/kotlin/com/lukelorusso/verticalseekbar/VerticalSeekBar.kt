@@ -302,15 +302,17 @@ open class VerticalSeekBar constructor(context: Context, attrs: AttributeSet) : 
             // here we intercept the click on the drawable
             if (clickToSetProgress) drawableCardView.setOnTouchListener { drawable, event ->
                 val positionY = event.y.roundToInt()
-                when (event.action and MotionEvent.ACTION_MASK) {
-                    MotionEvent.ACTION_DOWN, MotionEvent.ACTION_MOVE -> {
-                        val fillHeight = drawable.measuredHeight
-                        when {
-                            positionY in 1 until fillHeight -> progress = 100 - (positionY * 100 / fillHeight)
-                            positionY <= 0 -> progress = 100
-                            positionY >= fillHeight -> progress = 0
-                        }
+                val action = {
+                    val fillHeight = drawable.measuredHeight
+                    when {
+                        positionY in 1 until fillHeight -> progress = 100 - (positionY * 100 / fillHeight)
+                        positionY <= 0 -> progress = 100
+                        positionY >= fillHeight -> progress = 0
                     }
+                }
+                when (event.action and MotionEvent.ACTION_MASK) {
+                    MotionEvent.ACTION_DOWN -> action.invoke()
+                    MotionEvent.ACTION_MOVE -> if (useThumbToSetProgress) action.invoke()
                 }
                 true
             } else drawableCardView.setOnTouchListener(null)
