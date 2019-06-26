@@ -24,7 +24,7 @@
         android:layout_gravity="center"
         app:vsb_click_to_set_progress="true"
         app:vsb_drawable_corner_radius="15dp"
-        app:vsb_drawable_width="10dp"
+        app:vsb_drawable_width="15dp"
         app:vsb_drawable_background="#f2f2f2"
         app:vsb_drawable_progress_gradient_end="#4dd0e1"
         app:vsb_drawable_progress_gradient_start="#03a2ba"
