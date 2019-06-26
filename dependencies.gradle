@@ -8,8 +8,8 @@ allprojects {
 ext {
 
     // APP VERSION
-    androidVersionCode          = 4
-    androidVersionName          = '1.1.0' // REMEMBER: also update README.md (all instances)
+    androidVersionCode          = 5
+    androidVersionName          = '1.1.1' // REMEMBER: also update README.md (all instances)
 
     // ANDROID VERSION
     androidCompileSdkVersion    = 28

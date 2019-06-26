@@ -5,7 +5,6 @@ package com.lukelorusso.verticalseekbar
 import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
 import android.util.AttributeSet
@@ -23,6 +22,7 @@ import kotlin.math.roundToInt
 open class VerticalSeekBar constructor(context: Context, attrs: AttributeSet) : FrameLayout(context, attrs) {
 
     companion object {
+        private const val DEFAULT_MAX_VALUE = 100
         const val DEFAULT_DRAWABLE_BACKGROUND: String = "#f6f6f6"
         const val DEFAULT_DRAWABLE_PROGRESS_START: String = "#4D88E1"
         const val DEFAULT_DRAWABLE_PROGRESS_END: String = "#7BA1DB"
@@ -45,6 +45,18 @@ open class VerticalSeekBar constructor(context: Context, attrs: AttributeSet) : 
             field = value
             applyAttributes()
         }
+    var drawableBackgroundStartColor: Int = Color.parseColor(DEFAULT_DRAWABLE_BACKGROUND)
+        set(value) {
+            field = value
+            drawableBackgroundDrawable = null
+            applyAttributes()
+        }
+    var drawableBackgroundEndColor: Int = Color.parseColor(DEFAULT_DRAWABLE_BACKGROUND)
+        set(value) {
+            field = value
+            drawableBackgroundDrawable = null
+            applyAttributes()
+        }
     var drawableProgressDrawable: Drawable? = null
         set(value) {
             field = value
@@ -53,11 +65,13 @@ open class VerticalSeekBar constructor(context: Context, attrs: AttributeSet) : 
     var drawableProgressStartColor: Int = Color.parseColor(DEFAULT_DRAWABLE_PROGRESS_START)
         set(value) {
             field = value
+            drawableProgressDrawable = null
             applyAttributes()
         }
     var drawableProgressEndColor: Int = Color.parseColor(DEFAULT_DRAWABLE_PROGRESS_END)
         set(value) {
             field = value
+            drawableProgressDrawable = null
             applyAttributes()
         }
     var drawableWidth: Int? = null
@@ -110,13 +124,24 @@ open class VerticalSeekBar constructor(context: Context, attrs: AttributeSet) : 
             field = value
             applyAttributes()
         }
+    var maxValue = DEFAULT_MAX_VALUE
+        set(value) {
+            if (progress > value) progress = value
+            field = value
+            updateViews()
+        }
     var progress: Int = 50
         set(value) {
-            if (field != value) {
-                onProgressChangeListener?.invoke(value)
+            val newValue = when {
+                value < 0 -> 0
+                value > maxValue -> maxValue
+                else -> value
             }
-            field = value
-            updateViews(value)
+            if (field != newValue) {
+                onProgressChangeListener?.invoke(newValue)
+            }
+            field = newValue
+            updateViews()
         }
     private var yDelta: Int = 0
     private var initEnded = false // if true allows the view to be updated after setting an attribute programmatically
@@ -132,31 +157,23 @@ open class VerticalSeekBar constructor(context: Context, attrs: AttributeSet) : 
         try {
             clickToSetProgress =
                 attributes.getBoolean(R.styleable.VerticalSeekBar_vsb_click_to_set_progress, clickToSetProgress)
-            attributes.getLayoutDimension(R.styleable.VerticalSeekBar_android_layout_width, minLayoutWidth).also {
-                container.layoutParams.width = if (it != -1 && it < minLayoutWidth) minLayoutWidth // wrap_content
-                else it
-            }
-            attributes.getLayoutDimension(R.styleable.VerticalSeekBar_android_layout_height, minLayoutHeight).also {
-                container.layoutParams.height =
-                    if (it != -1 && it < minLayoutHeight) minLayoutHeight // wrap_content
-                    else it
-            }
-            attributes.getDrawable(R.styleable.VerticalSeekBar_vsb_drawable_background)?.also {
-                drawableBackgroundDrawable = it
-            }
-            attributes.getDrawable(R.styleable.VerticalSeekBar_vsb_drawable_progress).also {
-                drawableProgressDrawable = it
-            }
-            attributes.getDrawable(R.styleable.VerticalSeekBar_vsb_min_placeholder_src).also {
-                minPlaceholderDrawable = it
-            }
-            attributes.getDrawable(R.styleable.VerticalSeekBar_vsb_max_placeholder_src).also {
-                maxPlaceholderDrawable = it
-            }
             drawableCornerRadius = attributes.getLayoutDimension(
                 R.styleable.VerticalSeekBar_vsb_drawable_corner_radius,
                 drawableCornerRadius
             )
+            drawableBackgroundStartColor =
+                attributes.getColor(
+                    R.styleable.VerticalSeekBar_vsb_drawable_background_gradient_start,
+                    drawableBackgroundStartColor
+                )
+            drawableBackgroundEndColor =
+                attributes.getColor(
+                    R.styleable.VerticalSeekBar_vsb_drawable_background_gradient_end,
+                    drawableBackgroundEndColor
+                )
+            attributes.getDrawable(R.styleable.VerticalSeekBar_vsb_drawable_background)?.also {
+                drawableBackgroundDrawable = it
+            }
             drawableProgressStartColor =
                 attributes.getColor(
                     R.styleable.VerticalSeekBar_vsb_drawable_progress_gradient_start,
@@ -167,6 +184,28 @@ open class VerticalSeekBar constructor(context: Context, attrs: AttributeSet) : 
                     R.styleable.VerticalSeekBar_vsb_drawable_progress_gradient_end,
                     drawableProgressEndColor
                 )
+            attributes.getDrawable(R.styleable.VerticalSeekBar_vsb_drawable_progress).also {
+                drawableProgressDrawable = it
+            }
+            drawableWidth = attributes.getDimensionPixelSize(
+                R.styleable.VerticalSeekBar_vsb_drawable_width,
+                drawableWidth ?: container.layoutParams.width
+            )
+            attributes.getLayoutDimension(R.styleable.VerticalSeekBar_android_layout_width, minLayoutWidth).also {
+                container.layoutParams.width = if (it != -1 && it < minLayoutWidth) minLayoutWidth // wrap_content
+                else it
+            }
+            attributes.getLayoutDimension(R.styleable.VerticalSeekBar_android_layout_height, minLayoutHeight).also {
+                container.layoutParams.height =
+                    if (it != -1 && it < minLayoutHeight) minLayoutHeight // wrap_content
+                    else it
+            }
+            attributes.getDrawable(R.styleable.VerticalSeekBar_vsb_min_placeholder_src).also {
+                minPlaceholderDrawable = it
+            }
+            attributes.getDrawable(R.styleable.VerticalSeekBar_vsb_max_placeholder_src).also {
+                maxPlaceholderDrawable = it
+            }
             showThumb = attributes.getBoolean(R.styleable.VerticalSeekBar_vsb_show_thumb, showThumb)
             thumbContainerColor =
                 attributes.getColor(R.styleable.VerticalSeekBar_vsb_thumb_container_tint, thumbContainerColor)
@@ -177,14 +216,10 @@ open class VerticalSeekBar constructor(context: Context, attrs: AttributeSet) : 
             attributes.getDrawable(R.styleable.VerticalSeekBar_vsb_thumb_placeholder_src).also {
                 thumbPlaceholderDrawable = it
             }
-            drawableWidth = attributes.getDimensionPixelSize(
-                R.styleable.VerticalSeekBar_vsb_drawable_width,
-                drawableWidth ?: container.layoutParams.width
-            )
             attributes.getInt(R.styleable.VerticalSeekBar_vsb_progress, progress).also {
                 progress = when {
                     it < 0 -> 0
-                    it > 100 -> 100
+                    it > maxValue -> maxValue
                     else -> it
                 }
             }
@@ -219,10 +254,13 @@ open class VerticalSeekBar constructor(context: Context, attrs: AttributeSet) : 
             drawableCardView.layoutParams.width = drawableWidth ?: 0
 
             // Customizing drawableBackground
-            drawableBackground.background =
-                drawableBackgroundDrawable ?: ColorDrawable(Integer.decode(DEFAULT_DRAWABLE_BACKGROUND))
+            if (drawableBackgroundDrawable == null) drawableBackgroundDrawable = GradientDrawable(
+                GradientDrawable.Orientation.TOP_BOTTOM,
+                intArrayOf(drawableBackgroundStartColor, drawableBackgroundEndColor)
+            ).apply { cornerRadius = 0f }
+            drawableBackground.background = drawableBackgroundDrawable
 
-            // Generating drawableProgress gradient
+            // Customizing drawableProgress
             if (drawableProgressDrawable == null) drawableProgressDrawable = GradientDrawable(
                 GradientDrawable.Orientation.TOP_BOTTOM,
                 intArrayOf(drawableProgressStartColor, drawableProgressEndColor)
@@ -290,8 +328,8 @@ open class VerticalSeekBar constructor(context: Context, attrs: AttributeSet) : 
                         val positionY = rawY - yDelta
                         val fillHeight = height - thumb.height
                         when {
-                            positionY in 1 until fillHeight -> progress = 100 - (positionY * 100 / fillHeight)
-                            positionY <= 0 -> progress = 100
+                            positionY in 1 until fillHeight -> progress = maxValue - (positionY * maxValue / fillHeight)
+                            positionY <= 0 -> progress = maxValue
                             positionY >= fillHeight -> progress = 0
                         }
                     }
@@ -305,8 +343,8 @@ open class VerticalSeekBar constructor(context: Context, attrs: AttributeSet) : 
                 val action = {
                     val fillHeight = drawable.measuredHeight
                     when {
-                        positionY in 1 until fillHeight -> progress = 100 - (positionY * 100 / fillHeight)
-                        positionY <= 0 -> progress = 100
+                        positionY in 1 until fillHeight -> progress = maxValue - (positionY * maxValue / fillHeight)
+                        positionY <= 0 -> progress = maxValue
                         positionY >= fillHeight -> progress = 0
                     }
                 }
@@ -324,13 +362,13 @@ open class VerticalSeekBar constructor(context: Context, attrs: AttributeSet) : 
     /**
      * Inside here the views are repositioned based on the new value
      */
-    private fun updateViews(value: Int) {
+    private fun updateViews() {
         post {
             val fillHeight = height - thumb.height
-            val marginByProgress = fillHeight - (value * fillHeight / 100)
+            val marginByProgress = fillHeight - (progress * fillHeight / maxValue)
             thumb.layoutParams =
                 (thumb.layoutParams as LayoutParams).apply { topMargin = marginByProgress }
-            drawableProgress.translationY = (drawableBackground.height * (100 - value) / 100).toFloat()
+            drawableProgress.translationY = (drawableBackground.height * (maxValue - progress) / maxValue).toFloat()
             invalidate()
         }
     }

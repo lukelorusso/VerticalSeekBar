@@ -6,6 +6,8 @@
         <attr name="vsb_drawable_corner_radius" format="dimension" />
         <attr name="vsb_drawable_width" format="dimension" />
         <attr name="vsb_drawable_background" format="reference|color" />
+        <attr name="vsb_drawable_background_gradient_start" format="color" />
+        <attr name="vsb_drawable_background_gradient_end" format="color" />
         <attr name="vsb_drawable_progress" format="reference|color" />
         <attr name="vsb_drawable_progress_gradient_start" format="color" />
         <attr name="vsb_drawable_progress_gradient_end" format="color" />
