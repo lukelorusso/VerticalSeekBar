@@ -14,8 +14,8 @@ This is the source code of an Android library: `-=:[ VerticalSeekBar ]:=-`
 ## Why would you need it? ##
 
 "Reinventing the wheel is, most of the time, a bad idea."  
-If you've ever tried to make a SeekBar work properly, you know this is not the case! 😏  
-From the moment you apply that `android:rotation="270"` all start to get messy: you cannot set the proper height to the drawable; the width of the bar distorts the width of your drawable; even customize your interaction with the bar is kind of tricky!  
+If you've ever tried to make a vertical SeekBar work properly, you know this is not the case! 😏  
+From the moment you apply that `android:rotation="270"` all start to get messy: you cannot set the proper height for the drawable; the width of the bar distorts the width of your drawable; even customizing your interaction with the bar is kind of tricky!  
 I've been through all of this and suddenly I've had enough.
 
 Introducing a nicer, redesigned, vertical and highly customizable SeekBar.
@@ -24,7 +24,7 @@ What you got:
 - custom progress drawable: apply resources or color gradients
 - custom thumb: chose your size, background color, corner radius or even to completely hide it
 - view width and drawable width completely separated
-- choose how to set your progress (just with the thumb, clicking around, or both)
+- choose how to set your progress (just sliding the thumb, clicking around, or both)
 - min and max placeholders
 - much more!
 
@@ -69,9 +69,9 @@ All of them can be also set programmatically.
 
 - - -
 
-## Attributes ##
+# Attributes #
 
-# Background and Progress #
+## Background and Progress ##
 
 To set your progress value programmatically:
 ```kotlin
@@ -115,7 +115,7 @@ mainVerticalSeekBar.drawableCornerRadius = 40 // those are pixels
 mainVerticalSeekBar.drawableWidth = 30 // those are pixels
 ```
 
-# Placeholders #
+## Placeholders ##
 
 To set minimum and/or maximum placeholders (`null` is a possible value to remove them):
 ```kotlin
@@ -141,7 +141,7 @@ If you just don't want to see it:
 mainVerticalSeekBar.showThumb = false
 ```
 
-# Interaction #
+## Interaction ##
 
 You can interact with your VerticalSeekBar in two ways:
 - sliding the thumb
@@ -157,12 +157,12 @@ Try to change those booleans too see other possibilities!
 
 - - -
 
-## Explore! ##
+# Explore! #
 
 Feel free to checkout and launch the example app 🎡
 
 - - -
 
-## Copyright ##
+# Copyright #
 
 The App: Copyright 2019 LUCA LORUSSO - http://lukelorusso.com

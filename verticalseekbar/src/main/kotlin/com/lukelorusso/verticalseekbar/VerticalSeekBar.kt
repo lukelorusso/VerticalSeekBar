@@ -126,8 +126,12 @@ open class VerticalSeekBar constructor(context: Context, attrs: AttributeSet) : 
         }
     var maxValue = DEFAULT_MAX_VALUE
         set(value) {
-            if (progress > value) progress = value
-            field = value
+            val newValue = when {
+                value < 1 -> 1
+                else -> value
+            }
+            if (progress > newValue) progress = newValue
+            field = newValue
             updateViews()
         }
     var progress: Int = 50
@@ -328,7 +332,10 @@ open class VerticalSeekBar constructor(context: Context, attrs: AttributeSet) : 
                         val positionY = rawY - yDelta
                         val fillHeight = height - thumb.height
                         when {
-                            positionY in 1 until fillHeight -> progress = maxValue - (positionY * maxValue / fillHeight)
+                            positionY in 1 until fillHeight -> {
+                                val newValue = maxValue - (positionY.toFloat() * maxValue / fillHeight)
+                                progress = newValue.roundToInt()
+                            }
                             positionY <= 0 -> progress = maxValue
                             positionY >= fillHeight -> progress = 0
                         }
@@ -343,7 +350,10 @@ open class VerticalSeekBar constructor(context: Context, attrs: AttributeSet) : 
                 val action = {
                     val fillHeight = drawable.measuredHeight
                     when {
-                        positionY in 1 until fillHeight -> progress = maxValue - (positionY * maxValue / fillHeight)
+                        positionY in 1 until fillHeight -> {
+                            val newValue = maxValue - (positionY.toFloat() * maxValue / fillHeight)
+                            progress = newValue.roundToInt()
+                        }
                         positionY <= 0 -> progress = maxValue
                         positionY >= fillHeight -> progress = 0
                     }
