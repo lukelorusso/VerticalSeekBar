@@ -11,6 +11,7 @@ import android.graphics.drawable.GradientDrawable
 import android.util.AttributeSet
 import android.util.DisplayMetrics
 import android.view.MotionEvent
+import android.view.View
 import android.widget.FrameLayout
 import kotlinx.android.synthetic.main.layout_verticalseekbar.view.*
 import kotlin.math.max
@@ -29,20 +30,23 @@ open class VerticalSeekBar constructor(context: Context, attrs: AttributeSet) : 
 
     private var onProgressChangeListener: ((Int) -> Unit)? = null
 
-    private var yDelta: Int = 0
-    private var minLayoutWidth: Int = 0
-    private var minLayoutHeight: Int = 0
-    private var maxPlaceholderDrawable: Drawable? = null
-    private var minPlaceholderDrawable: Drawable? = null
+    private var clickToSetProgress = true
     private var drawableCornerRadius: Int = 0
     private var drawableBackgroundDrawable: Drawable? = null
     private var drawableProgressDrawable: Drawable? = null
     private var drawableProgressStartColor: Int = Color.parseColor(DEFAULT_DRAWABLE_PROGRESS_START)
     private var drawableProgressEndColor: Int = Color.parseColor(DEFAULT_DRAWABLE_PROGRESS_END)
+    private var drawableWidth: Int? = null
+    private var minLayoutWidth: Int = 0
+    private var minLayoutHeight: Int = 0
+    private var maxPlaceholderDrawable: Drawable? = null
+    private var minPlaceholderDrawable: Drawable? = null
+    private var showThumb = true
     private var thumbContainerColor: Int = Color.WHITE
     private var thumbContainerCornerRadius: Int = 0
     private var thumbPlaceholderDrawable: Drawable? = null
-    private var drawableWidth: Int? = null
+    private var useThumbToSetProgress = true
+    private var yDelta: Int = 0
     var progress: Int = 50
         set(value) {
             if (field != value) {
@@ -61,6 +65,8 @@ open class VerticalSeekBar constructor(context: Context, attrs: AttributeSet) : 
 
         val attributes = context.obtainStyledAttributes(attrs, R.styleable.VerticalSeekBar, 0, 0)
         try {
+            clickToSetProgress =
+                attributes.getBoolean(R.styleable.VerticalSeekBar_vsb_click_to_set_progress, clickToSetProgress)
             attributes.getLayoutDimension(R.styleable.VerticalSeekBar_android_layout_width, minLayoutWidth).also {
                 container.layoutParams.width = if (it != -1 && it < minLayoutWidth) minLayoutWidth // wrap_content
                 else it
@@ -96,6 +102,7 @@ open class VerticalSeekBar constructor(context: Context, attrs: AttributeSet) : 
                     R.styleable.VerticalSeekBar_vsb_drawable_progress_gradient_end,
                     drawableProgressEndColor
                 )
+            showThumb = attributes.getBoolean(R.styleable.VerticalSeekBar_vsb_show_thumb, showThumb)
             thumbContainerColor =
                 attributes.getColor(R.styleable.VerticalSeekBar_vsb_thumb_container_tint, thumbContainerColor)
             thumbContainerCornerRadius = attributes.getLayoutDimension(
@@ -116,6 +123,8 @@ open class VerticalSeekBar constructor(context: Context, attrs: AttributeSet) : 
                     else -> it
                 }
             }
+            useThumbToSetProgress =
+                attributes.getBoolean(R.styleable.VerticalSeekBar_vsb_use_thumb_to_set_progress, useThumbToSetProgress)
 
         } finally {
             attributes.recycle()
@@ -142,35 +151,39 @@ open class VerticalSeekBar constructor(context: Context, attrs: AttributeSet) : 
         // Applying custom placeholders
         maxPlaceholder.setImageDrawable(maxPlaceholderDrawable) // can also be null
         minPlaceholder.setImageDrawable(minPlaceholderDrawable) // can also be null
-        thumbPlaceholderDrawable?.also { thumbPlaceholder.setImageDrawable(it) } // CANNOT be null
 
         // Let's shape the thumb
-        val states = arrayOf(
-            intArrayOf(android.R.attr.state_enabled), // enabled
-            intArrayOf(-android.R.attr.state_enabled), // disabled
-            intArrayOf(-android.R.attr.state_checked), // unchecked
-            intArrayOf(android.R.attr.state_pressed)  // pressed
-        )
-        val colors = arrayOf(
-            thumbContainerColor,
-            thumbContainerColor,
-            thumbContainerColor,
-            thumbContainerColor
-        ).toIntArray()
-        thumbCardView.backgroundTintList = ColorStateList(states, colors)
-        thumbCardView.measure(0, 0)
-        thumb.layoutParams.apply {
-            val increase = (thumbCardView.elevation + context.dpToPixel(1F)).roundToInt()
-            width = thumbCardView.measuredWidth + increase
-            height = thumbCardView.measuredHeight + increase
-            (thumbCardView.layoutParams as LayoutParams).topMargin = increase / 2
+        if (showThumb) {
+            thumbPlaceholderDrawable?.also { thumbPlaceholder.setImageDrawable(it) } // CANNOT be null
+            thumbCardView.visibility = View.VISIBLE
+            val states = arrayOf(
+                intArrayOf(android.R.attr.state_enabled), // enabled
+                intArrayOf(-android.R.attr.state_enabled), // disabled
+                intArrayOf(-android.R.attr.state_checked), // unchecked
+                intArrayOf(android.R.attr.state_pressed)  // pressed
+            )
+            val colors = arrayOf(
+                thumbContainerColor,
+                thumbContainerColor,
+                thumbContainerColor,
+                thumbContainerColor
+            ).toIntArray()
+            thumbCardView.backgroundTintList = ColorStateList(states, colors)
+            thumbCardView.measure(0, 0)
+            thumb.layoutParams.apply {
+                val increase = (thumbCardView.elevation + context.dpToPixel(1F)).roundToInt()
+                width = thumbCardView.measuredWidth + increase
+                height = thumbCardView.measuredHeight + increase
+                (thumbCardView.layoutParams as LayoutParams).topMargin = increase / 2
+            }
         }
+        else thumbCardView.visibility = View.GONE
 
         // Adding some margin to drawableCardView, maxPlaceholder and minPlaceholder
         maxPlaceholder.measure(0, 0)
         minPlaceholder.measure(0, 0)
         (drawableCardView.layoutParams as LayoutParams).apply {
-            val thumbCardViewHalfHeight = thumbCardView.measuredHeight / 2
+            val thumbCardViewHalfHeight = if (showThumb) thumbCardView.measuredHeight / 2 else 0
             val maxPlaceholderHalfHeight = maxPlaceholder.measuredHeight / 2
             val minPlaceholderHalfHeight = minPlaceholder.measuredHeight / 2
             topMargin = max(thumbCardViewHalfHeight, maxPlaceholderHalfHeight)
@@ -183,7 +196,7 @@ open class VerticalSeekBar constructor(context: Context, attrs: AttributeSet) : 
         }
 
         // Here's where the magic happens
-        thumb.setOnTouchListener { thumb, event ->
+        if (showThumb && useThumbToSetProgress) thumb.setOnTouchListener { thumb, event ->
             val rawY = event.rawY.roundToInt()
             when (event.action and MotionEvent.ACTION_MASK) {
                 MotionEvent.ACTION_DOWN -> { // here we calculate the displacement (yDelta)
@@ -200,10 +213,10 @@ open class VerticalSeekBar constructor(context: Context, attrs: AttributeSet) : 
                 }
             }
             true
-        }
+        } else thumb.setOnTouchListener(null)
 
         // here we intercept the click on the drawable
-        drawableCardView.setOnTouchListener { drawable, event ->
+        if (clickToSetProgress) drawableCardView.setOnTouchListener { drawable, event ->
             val positionY = event.y.roundToInt()
             when (event.action and MotionEvent.ACTION_MASK) {
                 MotionEvent.ACTION_DOWN, MotionEvent.ACTION_MOVE -> {
@@ -216,7 +229,7 @@ open class VerticalSeekBar constructor(context: Context, attrs: AttributeSet) : 
                 }
             }
             true
-        }
+        } else drawableCardView.setOnTouchListener(null)
     }
 
     fun setOnProgressChangeListener(listener: ((Int) -> Unit)?) {
