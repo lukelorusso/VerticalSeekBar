@@ -3,14 +3,14 @@
 
     <declare-styleable name="VerticalSeekBar">
         <attr name="vsb_click_to_set_progress" format="boolean" />
-        <attr name="vsb_drawable_corner_radius" format="dimension" />
-        <attr name="vsb_drawable_width" format="dimension" />
-        <attr name="vsb_drawable_background" format="reference|color" />
-        <attr name="vsb_drawable_background_gradient_start" format="color" />
-        <attr name="vsb_drawable_background_gradient_end" format="color" />
-        <attr name="vsb_drawable_progress" format="reference|color" />
-        <attr name="vsb_drawable_progress_gradient_start" format="color" />
-        <attr name="vsb_drawable_progress_gradient_end" format="color" />
+        <attr name="vsb_bar_corner_radius" format="dimension" />
+        <attr name="vsb_bar_width" format="dimension" />
+        <attr name="vsb_bar_background" format="reference|color" />
+        <attr name="vsb_bar_background_gradient_start" format="color" />
+        <attr name="vsb_bar_background_gradient_end" format="color" />
+        <attr name="vsb_bar_progress" format="reference|color" />
+        <attr name="vsb_bar_progress_gradient_start" format="color" />
+        <attr name="vsb_bar_progress_gradient_end" format="color" />
         <attr name="vsb_progress" format="integer" />
         <attr name="vsb_min_placeholder_src" format="reference" />
         <attr name="vsb_max_placeholder_src" format="reference" />

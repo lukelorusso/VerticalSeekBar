@@ -1,7 +1,7 @@
 VerticalSeekBar
 ===============
 
-[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) [![Platform](https://img.shields.io/badge/platform-android-green.svg)](http://developer.android.com/index.html) [![API](https://img.shields.io/badge/API-21%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=21) [![Download](https://api.bintray.com/packages/lukelorusso/maven/com.lukelorusso:verticalseekbar/images/download.svg?version=1.1.1) ](https://bintray.com/lukelorusso/maven/com.lukelorusso:verticalseekbar/1.1.1/link)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) [![Platform](https://img.shields.io/badge/platform-android-green.svg)](http://developer.android.com/index.html) [![API](https://img.shields.io/badge/API-21%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=21) [![Download](https://api.bintray.com/packages/lukelorusso/maven/com.lukelorusso:verticalseekbar/images/download.svg?version=1.1.2) ](https://bintray.com/lukelorusso/maven/com.lukelorusso:verticalseekbar/1.1.2/link)
 
 ## Presentation ##
 
@@ -14,8 +14,8 @@ This is the source code of an Android library: `-=:[ VerticalSeekBar ]:=-`
 ## Why would you need it? ##
 
 *"Reinventing the wheel is, most of the time, a bad idea."*  
-If you've ever tried to make a vertical SeekBar work properly, you know this is not the case! 😏  
-From the moment you apply that `android:rotation="270"` all start to get messy: you cannot set the proper height for the drawable; the width of the bar distorts the width of your drawable; even customizing your interaction with the bar is kind of tricky!  
+If you've ever tried to make a vertical SeekBar work properly, you know this is not the case. 😏  
+From the moment you apply that `android:rotation="270"` all start to get messy: you cannot set the proper height for the drawable; the width of the bar distorts the width of your drawable; even customizing your interaction with the bar is kind of tricky.  
 I've been through all of this and suddenly I've had enough.
 
 **Introducing a nicer, redesigned and highly customizable VerticalSeekBar.**
@@ -35,7 +35,7 @@ What you got:
 Make sure to include the library in your app's build.gradle:
 
 ```groovy
-    implementation 'com.lukelorusso:verticalseekbar:1.1.1'
+    implementation 'com.lukelorusso:verticalseekbar:1.1.2'
 ```  
 
 Add the view to your layout:
@@ -49,11 +49,11 @@ maybe add some attributes... here you got some, we'll discuss them later
 ```
         ...
         app:vsb_click_to_set_progress="false"
-        app:vsb_drawable_corner_radius="15dp"
-        app:vsb_drawable_width="15dp"
-        app:vsb_drawable_background="#eeeeee"
-        app:vsb_drawable_progress_gradient_end="#4dd0e1"
-        app:vsb_drawable_progress_gradient_start="#03a2ba"
+        app:vsb_bar_corner_radius="15dp"
+        app:vsb_bar_width="15dp"
+        app:vsb_bar_background="#eeeeee"
+        app:vsb_bar_progress_gradient_end="#4dd0e1"
+        app:vsb_bar_progress_gradient_start="#03a2ba"
         app:vsb_max_placeholder_src="@drawable/max_placeholder"
         app:vsb_min_placeholder_src="@drawable/min_placeholder"
         app:vsb_progress="50"
@@ -93,26 +93,26 @@ For both **background** and **progress** you have 3 choices:
 
 Example for the first choice: apply a gradient
 ```kotlin
-mainVerticalSeekBar.drawableBackgroundStartColor = ContextCompat.getColor(this, R.color.my_background_start_color)
-mainVerticalSeekBar.drawableBackgroundEndColor = ContextCompat.getColor(this, R.color.my_background_end_color)
-mainVerticalSeekBar.drawableProgressStartColor = ContextCompat.getColor(this, R.color.my_progress_start_color)
-mainVerticalSeekBar.drawableProgressEndColor = ContextCompat.getColor(this, R.color.my_progress_end_color)
+mainVerticalSeekBar.barBackgroundStartColor = ContextCompat.getColor(this, R.color.my_background_start_color)
+mainVerticalSeekBar.barBackgroundEndColor = ContextCompat.getColor(this, R.color.my_background_end_color)
+mainVerticalSeekBar.barProgressStartColor = ContextCompat.getColor(this, R.color.my_progress_start_color)
+mainVerticalSeekBar.barProgressEndColor = ContextCompat.getColor(this, R.color.my_progress_end_color)
 ```
 
 Example for the second choice: apply a resource (will eventually override the first one)
 ```kotlin
-mainVerticalSeekBar.drawableBackgroundDrawable = getDrawable(R.color.my_background_color)
-mainVerticalSeekBar.drawableProgressDrawable = getDrawable(R.drawable.my_progress)
+mainVerticalSeekBar.barBackgroundDrawable = getDrawable(R.color.my_background_color)
+mainVerticalSeekBar.barProgressDrawable = getDrawable(R.drawable.my_progress)
 ```
 
 Your bar can also have rounded corners...
 ```kotlin
-mainVerticalSeekBar.drawableCornerRadius = 40 // those are pixels
+mainVerticalSeekBar.barCornerRadius = 40 // those are pixels
 ```
 
 ...and a proper independent width
 ```kotlin
-mainVerticalSeekBar.drawableWidth = 30 // those are pixels
+mainVerticalSeekBar.barWidth = 30 // those are pixels
 ```
 
 ## Placeholders ##

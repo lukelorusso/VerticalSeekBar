@@ -23,9 +23,9 @@ open class VerticalSeekBar constructor(context: Context, attrs: AttributeSet) : 
 
     companion object {
         private const val DEFAULT_MAX_VALUE = 100
-        const val DEFAULT_DRAWABLE_BACKGROUND: String = "#f6f6f6"
-        const val DEFAULT_DRAWABLE_PROGRESS_START: String = "#4D88E1"
-        const val DEFAULT_DRAWABLE_PROGRESS_END: String = "#7BA1DB"
+        private const val DEFAULT_DRAWABLE_BACKGROUND: String = "#f6f6f6"
+        private const val DEFAULT_DRAWABLE_PROGRESS_START: String = "#4D88E1"
+        private const val DEFAULT_DRAWABLE_PROGRESS_END: String = "#7BA1DB"
     }
 
     private var onProgressChangeListener: ((Int) -> Unit)? = null
@@ -35,46 +35,46 @@ open class VerticalSeekBar constructor(context: Context, attrs: AttributeSet) : 
             field = value
             applyAttributes()
         }
-    var drawableCornerRadius: Int = 0
+    var barCornerRadius: Int = 0
         set(value) {
             field = value
             applyAttributes()
         }
-    var drawableBackgroundDrawable: Drawable? = null
+    var barBackgroundDrawable: Drawable? = null
         set(value) {
             field = value
             applyAttributes()
         }
-    var drawableBackgroundStartColor: Int = Color.parseColor(DEFAULT_DRAWABLE_BACKGROUND)
+    var barBackgroundStartColor: Int = Color.parseColor(DEFAULT_DRAWABLE_BACKGROUND)
         set(value) {
             field = value
-            drawableBackgroundDrawable = null
+            barBackgroundDrawable = null
             applyAttributes()
         }
-    var drawableBackgroundEndColor: Int = Color.parseColor(DEFAULT_DRAWABLE_BACKGROUND)
+    var barBackgroundEndColor: Int = Color.parseColor(DEFAULT_DRAWABLE_BACKGROUND)
         set(value) {
             field = value
-            drawableBackgroundDrawable = null
+            barBackgroundDrawable = null
             applyAttributes()
         }
-    var drawableProgressDrawable: Drawable? = null
+    var barProgressDrawable: Drawable? = null
         set(value) {
             field = value
             applyAttributes()
         }
-    var drawableProgressStartColor: Int = Color.parseColor(DEFAULT_DRAWABLE_PROGRESS_START)
+    var barProgressStartColor: Int = Color.parseColor(DEFAULT_DRAWABLE_PROGRESS_START)
         set(value) {
             field = value
-            drawableProgressDrawable = null
+            barProgressDrawable = null
             applyAttributes()
         }
-    var drawableProgressEndColor: Int = Color.parseColor(DEFAULT_DRAWABLE_PROGRESS_END)
+    var barProgressEndColor: Int = Color.parseColor(DEFAULT_DRAWABLE_PROGRESS_END)
         set(value) {
             field = value
-            drawableProgressDrawable = null
+            barProgressDrawable = null
             applyAttributes()
         }
-    var drawableWidth: Int? = null
+    var barWidth: Int? = null
         set(value) {
             field = value
             applyAttributes()
@@ -161,39 +161,39 @@ open class VerticalSeekBar constructor(context: Context, attrs: AttributeSet) : 
         try {
             clickToSetProgress =
                 attributes.getBoolean(R.styleable.VerticalSeekBar_vsb_click_to_set_progress, clickToSetProgress)
-            drawableCornerRadius = attributes.getLayoutDimension(
-                R.styleable.VerticalSeekBar_vsb_drawable_corner_radius,
-                drawableCornerRadius
+            barCornerRadius = attributes.getLayoutDimension(
+                R.styleable.VerticalSeekBar_vsb_bar_corner_radius,
+                barCornerRadius
             )
-            drawableBackgroundStartColor =
+            barBackgroundStartColor =
                 attributes.getColor(
-                    R.styleable.VerticalSeekBar_vsb_drawable_background_gradient_start,
-                    drawableBackgroundStartColor
+                    R.styleable.VerticalSeekBar_vsb_bar_background_gradient_start,
+                    barBackgroundStartColor
                 )
-            drawableBackgroundEndColor =
+            barBackgroundEndColor =
                 attributes.getColor(
-                    R.styleable.VerticalSeekBar_vsb_drawable_background_gradient_end,
-                    drawableBackgroundEndColor
+                    R.styleable.VerticalSeekBar_vsb_bar_background_gradient_end,
+                    barBackgroundEndColor
                 )
-            attributes.getDrawable(R.styleable.VerticalSeekBar_vsb_drawable_background)?.also {
-                drawableBackgroundDrawable = it
+            attributes.getDrawable(R.styleable.VerticalSeekBar_vsb_bar_background)?.also {
+                barBackgroundDrawable = it
             }
-            drawableProgressStartColor =
+            barProgressStartColor =
                 attributes.getColor(
-                    R.styleable.VerticalSeekBar_vsb_drawable_progress_gradient_start,
-                    drawableProgressStartColor
+                    R.styleable.VerticalSeekBar_vsb_bar_progress_gradient_start,
+                    barProgressStartColor
                 )
-            drawableProgressEndColor =
+            barProgressEndColor =
                 attributes.getColor(
-                    R.styleable.VerticalSeekBar_vsb_drawable_progress_gradient_end,
-                    drawableProgressEndColor
+                    R.styleable.VerticalSeekBar_vsb_bar_progress_gradient_end,
+                    barProgressEndColor
                 )
-            attributes.getDrawable(R.styleable.VerticalSeekBar_vsb_drawable_progress).also {
-                drawableProgressDrawable = it
+            attributes.getDrawable(R.styleable.VerticalSeekBar_vsb_bar_progress).also {
+                barProgressDrawable = it
             }
-            drawableWidth = attributes.getDimensionPixelSize(
-                R.styleable.VerticalSeekBar_vsb_drawable_width,
-                drawableWidth ?: container.layoutParams.width
+            barWidth = attributes.getDimensionPixelSize(
+                R.styleable.VerticalSeekBar_vsb_bar_width,
+                barWidth ?: container.layoutParams.width
             )
             attributes.getLayoutDimension(R.styleable.VerticalSeekBar_android_layout_width, minLayoutWidth).also {
                 container.layoutParams.width = if (it != -1 && it < minLayoutWidth) minLayoutWidth // wrap_content
@@ -255,24 +255,24 @@ open class VerticalSeekBar constructor(context: Context, attrs: AttributeSet) : 
             initEnded = false // will be released at the end
 
             // Customizing drawableCardView
-            drawableCardView.layoutParams.width = drawableWidth ?: 0
+            barCardView.layoutParams.width = barWidth ?: 0
 
             // Customizing drawableBackground
-            if (drawableBackgroundDrawable == null) drawableBackgroundDrawable = GradientDrawable(
+            if (barBackgroundDrawable == null) barBackgroundDrawable = GradientDrawable(
                 GradientDrawable.Orientation.TOP_BOTTOM,
-                intArrayOf(drawableBackgroundStartColor, drawableBackgroundEndColor)
+                intArrayOf(barBackgroundStartColor, barBackgroundEndColor)
             ).apply { cornerRadius = 0f }
-            drawableBackground.background = drawableBackgroundDrawable
+            barBackground.background = barBackgroundDrawable
 
             // Customizing drawableProgress
-            if (drawableProgressDrawable == null) drawableProgressDrawable = GradientDrawable(
+            if (barProgressDrawable == null) barProgressDrawable = GradientDrawable(
                 GradientDrawable.Orientation.TOP_BOTTOM,
-                intArrayOf(drawableProgressStartColor, drawableProgressEndColor)
+                intArrayOf(barProgressStartColor, barProgressEndColor)
             ).apply { cornerRadius = 0f }
-            drawableProgress.background = drawableProgressDrawable
+            barProgress.background = barProgressDrawable
 
             // Applying card corner radius
-            drawableCardView.radius = drawableCornerRadius.toFloat()
+            barCardView.radius = barCornerRadius.toFloat()
             thumbCardView.radius = thumbContainerCornerRadius.toFloat()
 
             // Applying custom placeholders
@@ -308,7 +308,7 @@ open class VerticalSeekBar constructor(context: Context, attrs: AttributeSet) : 
             // Adding some margin to drawableCardView, maxPlaceholder and minPlaceholder
             maxPlaceholder.measure(0, 0)
             minPlaceholder.measure(0, 0)
-            (drawableCardView.layoutParams as LayoutParams).apply {
+            (barCardView.layoutParams as LayoutParams).apply {
                 val thumbCardViewHalfHeight = if (showThumb) thumbCardView.measuredHeight / 2 else 0
                 val maxPlaceholderHalfHeight = maxPlaceholder.measuredHeight / 2
                 val minPlaceholderHalfHeight = minPlaceholder.measuredHeight / 2
@@ -344,8 +344,8 @@ open class VerticalSeekBar constructor(context: Context, attrs: AttributeSet) : 
                 true
             } else thumb.setOnTouchListener(null)
 
-            // here we intercept the click on the drawable
-            if (clickToSetProgress) drawableCardView.setOnTouchListener { drawable, event ->
+            // here we intercept the click on the bar
+            if (clickToSetProgress) barCardView.setOnTouchListener { drawable, event ->
                 val positionY = event.y.roundToInt()
                 val action = {
                     val fillHeight = drawable.measuredHeight
@@ -363,7 +363,7 @@ open class VerticalSeekBar constructor(context: Context, attrs: AttributeSet) : 
                     MotionEvent.ACTION_MOVE -> if (useThumbToSetProgress) action.invoke()
                 }
                 true
-            } else drawableCardView.setOnTouchListener(null)
+            } else barCardView.setOnTouchListener(null)
 
             initEnded = true
         }
@@ -378,7 +378,7 @@ open class VerticalSeekBar constructor(context: Context, attrs: AttributeSet) : 
             val marginByProgress = fillHeight - (progress * fillHeight / maxValue)
             thumb.layoutParams =
                 (thumb.layoutParams as LayoutParams).apply { topMargin = marginByProgress }
-            drawableProgress.translationY = (drawableBackground.height * (maxValue - progress) / maxValue).toFloat()
+            barProgress.translationY = (barBackground.height * (maxValue - progress) / maxValue).toFloat()
             invalidate()
         }
     }

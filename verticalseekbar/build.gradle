@@ -17,6 +17,11 @@ android {
             minifyEnabled false
         }
     }
+    sourceSets {
+        androidTest.java.srcDirs += 'src/androidTest/kotlin'
+        main.java.srcDirs += 'src/main/kotlin'
+        test.java.srcDirs += 'src/test/kotlin'
+    }
 }
 
 dependencies {
@@ -45,17 +50,20 @@ publishing {
             groupId libGroupId
             artifactId libArtifactId
             version libVersion
+
+            //The publication doesn't know about our dependencies, so we have to manually add them to the pom
+            pom.withXml {
+                def dependenciesNode = asNode().appendNode('dependencies')
+
+                def cardViewDepNode = dependenciesNode.appendNode('dependency')
+                cardViewDepNode.appendNode('groupId', cardViewGroupId)
+                cardViewDepNode.appendNode('artifactId', cardViewArtifactId)
+                cardViewDepNode.appendNode('version', cardViewVersion)
+            }
+
             artifact(sourceJar)
             artifact("$buildDir/outputs/aar/$libArtifactId-release.aar")
         }
-    }
-}
-
-android {
-    sourceSets {
-        androidTest.java.srcDirs += 'src/androidTest/kotlin'
-        main.java.srcDirs += 'src/main/kotlin'
-        test.java.srcDirs += 'src/test/kotlin'
     }
 }
 

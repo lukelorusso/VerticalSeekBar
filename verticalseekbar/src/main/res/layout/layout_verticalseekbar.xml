@@ -6,19 +6,19 @@
     android:layout_height="wrap_content">
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/drawableCardView"
+        android:id="@+id/barCardView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center_horizontal"
         app:cardElevation="0dp">
 
         <View
-            android:id="@+id/drawableBackground"
+            android:id="@+id/barBackground"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
         <View
-            android:id="@+id/drawableProgress"
+            android:id="@+id/barProgress"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
