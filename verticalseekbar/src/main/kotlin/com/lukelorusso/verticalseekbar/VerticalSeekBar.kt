@@ -12,6 +12,7 @@ import android.util.DisplayMetrics
 import android.view.MotionEvent
 import android.view.View
 import android.widget.FrameLayout
+import androidx.core.view.ViewCompat
 import kotlinx.android.synthetic.main.layout_verticalseekbar.view.*
 import kotlin.math.max
 import kotlin.math.roundToInt
@@ -295,10 +296,11 @@ open class VerticalSeekBar constructor(context: Context, attrs: AttributeSet) : 
                     thumbContainerColor,
                     thumbContainerColor
                 ).toIntArray()
-                thumbCardView.backgroundTintList = ColorStateList(states, colors)
+
+                ViewCompat.setBackgroundTintList(thumbCardView, ColorStateList(states, colors))
                 thumbCardView.measure(0, 0)
                 thumb.layoutParams.apply {
-                    val increase = (thumbCardView.elevation + context.dpToPixel(1F)).roundToInt()
+                    val increase = (ViewCompat.getElevation(thumbCardView) + context.dpToPixel(1F)).roundToInt()
                     width = thumbCardView.measuredWidth + increase
                     height = thumbCardView.measuredHeight + increase
                     (thumbCardView.layoutParams as LayoutParams).topMargin = increase / 2
