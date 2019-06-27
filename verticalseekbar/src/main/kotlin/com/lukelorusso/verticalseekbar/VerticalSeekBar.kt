@@ -323,17 +323,17 @@ open class VerticalSeekBar constructor(context: Context, attrs: AttributeSet) : 
 
             }
 
-            // Here's where the magic happens
+            // here we intercept the click on the thumb
             if (showThumb && useThumbToSetProgress) thumb.setOnTouchListener { thumb, event ->
                 val rawY = event.rawY.roundToInt()
                 when (event.action and MotionEvent.ACTION_MASK) {
-                    MotionEvent.ACTION_DOWN -> { // here we calculate the displacement (yDelta)
+                    MotionEvent.ACTION_DOWN -> { // here we get the max top y coordinate (yDelta)
                         yDelta = rawY - (thumb.layoutParams as LayoutParams).topMargin
                     }
-                    MotionEvent.ACTION_MOVE -> { // here we update progress
-                        val positionY = rawY - yDelta
+                    MotionEvent.ACTION_MOVE -> {
+                        val positionY = rawY - yDelta // here we calculate the displacement
                         val fillHeight = height - thumb.height
-                        when {
+                        when { // here we update progress
                             positionY in 1 until fillHeight -> {
                                 val newValue = maxValue - (positionY.toFloat() * maxValue / fillHeight)
                                 progress = newValue.roundToInt()
@@ -351,7 +351,7 @@ open class VerticalSeekBar constructor(context: Context, attrs: AttributeSet) : 
                 val positionY = event.y.roundToInt()
                 val action = {
                     val fillHeight = drawable.measuredHeight
-                    when {
+                    when { // here we update progress
                         positionY in 1 until fillHeight -> {
                             val newValue = maxValue - (positionY.toFloat() * maxValue / fillHeight)
                             progress = newValue.roundToInt()
