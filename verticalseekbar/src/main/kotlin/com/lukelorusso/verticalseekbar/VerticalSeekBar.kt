@@ -101,13 +101,21 @@ open class VerticalSeekBar constructor(context: Context, attrs: AttributeSet) : 
             field = value
             applyAttributes()
         }
-    private var maxPlaceholderPosition = Placeholder.MIDDLE
+    var maxPlaceholderPosition = Placeholder.MIDDLE
+        set(value) {
+            field = value
+            applyAttributes()
+        }
     var minPlaceholderDrawable: Drawable? = null
         set(value) {
             field = value
             applyAttributes()
         }
-    private var minPlaceholderPosition = Placeholder.MIDDLE
+    var minPlaceholderPosition = Placeholder.MIDDLE
+        set(value) {
+            field = value
+            applyAttributes()
+        }
     var showThumb = true
         set(value) {
             field = value
@@ -297,6 +305,7 @@ open class VerticalSeekBar constructor(context: Context, attrs: AttributeSet) : 
             minPlaceholder.setImageDrawable(minPlaceholderDrawable) // can also be null
 
             // Let's shape the thumb
+            val thumbCardViewIncrease = (ViewCompat.getElevation(thumbCardView) + context.dpToPixel(1F)).roundToInt()
             if (showThumb) {
                 thumbPlaceholderDrawable?.also { thumbPlaceholder.setImageDrawable(it) } // CANNOT be null
                 thumbCardView.visibility = View.VISIBLE
@@ -315,34 +324,32 @@ open class VerticalSeekBar constructor(context: Context, attrs: AttributeSet) : 
 
                 ViewCompat.setBackgroundTintList(thumbCardView, ColorStateList(states, colors))
                 thumbCardView.measure(0, 0)
-                thumb.layoutParams.apply {
-                    val increase = (ViewCompat.getElevation(thumbCardView) + context.dpToPixel(1F)).roundToInt()
-                    width = thumbCardView.measuredWidth + increase
-                    height = thumbCardView.measuredHeight + increase
-                    (thumbCardView.layoutParams as LayoutParams).topMargin = increase / 2
+                thumb.layoutParams = (thumb.layoutParams as LayoutParams).apply {
+                    width = thumbCardView.measuredWidth + thumbCardViewIncrease
+                    height = thumbCardView.measuredHeight + thumbCardViewIncrease
+                    thumbCardView.layoutParams =
+                        (thumbCardView.layoutParams as LayoutParams).apply { topMargin = thumbCardViewIncrease / 2 }
                 }
             } else thumbCardView.visibility = View.GONE
 
             // Adding some margin to drawableCardView, maxPlaceholder and minPlaceholder
             val maxPlaceholderLayoutParams = (maxPlaceholder.layoutParams as LayoutParams)
             val minPlaceholderLayoutParams = (minPlaceholder.layoutParams as LayoutParams)
-            maxPlaceholder.measure(0, 0)
-            minPlaceholder.measure(0, 0)
-            (barCardView.layoutParams as LayoutParams).apply {
+            barCardView.layoutParams = (barCardView.layoutParams as LayoutParams).apply {
                 val thumbCardViewHalfHeight = if (showThumb) thumbCardView.measuredHeight / 2 else 0
 
-                val maxPlaceholderHalfHeight = maxPlaceholder.measuredHeight / 2
+                val maxPlaceholderHalfHeight = maxPlaceholder.drawable.intrinsicHeight / 2
                 when (maxPlaceholderPosition) {
                     Placeholder.INSIDE -> {
                         topMargin = thumbCardViewHalfHeight
                         maxPlaceholderLayoutParams.topMargin = topMargin
                     }
                     Placeholder.OUTSIDE -> {
-                        topMargin = maxPlaceholder.measuredHeight +
-                                if (thumbCardViewHalfHeight > maxPlaceholder.measuredHeight)
-                                    thumbCardViewHalfHeight - maxPlaceholder.measuredHeight
+                        topMargin = maxPlaceholder.drawable.intrinsicHeight +
+                                if (thumbCardViewHalfHeight > maxPlaceholder.drawable.intrinsicHeight)
+                                    thumbCardViewHalfHeight - maxPlaceholder.drawable.intrinsicHeight
                                 else 0
-                        maxPlaceholderLayoutParams.topMargin = topMargin - maxPlaceholder.measuredHeight
+                        maxPlaceholderLayoutParams.topMargin = topMargin - maxPlaceholder.drawable.intrinsicHeight
                     }
                     else -> {
                         topMargin = max(thumbCardViewHalfHeight, maxPlaceholderHalfHeight)
@@ -350,27 +357,30 @@ open class VerticalSeekBar constructor(context: Context, attrs: AttributeSet) : 
                     }
                 }
                 maxPlaceholderLayoutParams.bottomMargin = maxPlaceholderLayoutParams.topMargin
+                maxPlaceholder.layoutParams = maxPlaceholderLayoutParams
 
-                val minPlaceholderHalfHeight = minPlaceholder.measuredHeight / 2
+                val minPlaceholderHalfHeight = minPlaceholder.drawable.intrinsicHeight / 2
                 when (minPlaceholderPosition) {
                     Placeholder.INSIDE -> {
                         bottomMargin = thumbCardViewHalfHeight
                         minPlaceholderLayoutParams.bottomMargin = bottomMargin
                     }
                     Placeholder.OUTSIDE -> {
-                        bottomMargin = minPlaceholder.measuredHeight +
-                                if (thumbCardViewHalfHeight > minPlaceholder.measuredHeight)
-                                    thumbCardViewHalfHeight - minPlaceholder.measuredHeight
+                        bottomMargin = minPlaceholder.drawable.intrinsicHeight +
+                                if (thumbCardViewHalfHeight > minPlaceholder.drawable.intrinsicHeight)
+                                    thumbCardViewHalfHeight - minPlaceholder.drawable.intrinsicHeight
                                 else 0
-                        minPlaceholderLayoutParams.bottomMargin = bottomMargin - minPlaceholder.measuredHeight
+                        minPlaceholderLayoutParams.bottomMargin = bottomMargin - minPlaceholder.drawable.intrinsicHeight
                     }
                     else -> {
                         bottomMargin = max(thumbCardViewHalfHeight, minPlaceholderHalfHeight)
                         minPlaceholderLayoutParams.bottomMargin = bottomMargin - minPlaceholderHalfHeight
                     }
                 }
-                minPlaceholderLayoutParams.topMargin = minPlaceholderLayoutParams.bottomMargin
-
+                bottomMargin += thumbCardViewIncrease
+                minPlaceholderLayoutParams.bottomMargin += thumbCardViewIncrease
+                minPlaceholderLayoutParams.topMargin = maxPlaceholderLayoutParams.bottomMargin
+                minPlaceholder.layoutParams = minPlaceholderLayoutParams
             }
 
             // here we intercept the click on the thumb
@@ -397,10 +407,10 @@ open class VerticalSeekBar constructor(context: Context, attrs: AttributeSet) : 
             } else thumb.setOnTouchListener(null)
 
             // here we intercept the click on the bar
-            if (clickToSetProgress) barCardView.setOnTouchListener { drawable, event ->
+            if (clickToSetProgress) barCardView.setOnTouchListener { bar, event ->
                 val positionY = event.y.roundToInt()
                 val action = {
-                    val fillHeight = drawable.measuredHeight
+                    val fillHeight = bar.measuredHeight
                     when { // here we update progress
                         positionY in 1 until fillHeight -> {
                             val newValue = maxValue - (positionY.toFloat() * maxValue / fillHeight)
@@ -418,6 +428,8 @@ open class VerticalSeekBar constructor(context: Context, attrs: AttributeSet) : 
             } else barCardView.setOnTouchListener(null)
 
             initEnded = true
+
+            updateViews()
         }
     }
 
@@ -425,12 +437,18 @@ open class VerticalSeekBar constructor(context: Context, attrs: AttributeSet) : 
      * Inside here the views are repositioned based on the new value
      */
     private fun updateViews() {
-        post {
+        if (initEnded) post {
             val barCardViewLayoutParams = barCardView.layoutParams as LayoutParams
             val fillHeight = height - barCardViewLayoutParams.topMargin - barCardViewLayoutParams.bottomMargin
             val marginByProgress = fillHeight - (progress * fillHeight / maxValue)
-            thumb.layoutParams =
-                (thumb.layoutParams as LayoutParams).apply { topMargin = marginByProgress }
+            thumb.layoutParams = (thumb.layoutParams as LayoutParams).apply {
+                topMargin = marginByProgress
+                val thumbCardViewHalfHeight = if (showThumb) thumbCardView.measuredHeight / 2 else 0
+                if (barCardViewLayoutParams.topMargin > thumbCardViewHalfHeight) {
+                    val displacement = barCardViewLayoutParams.topMargin - thumbCardViewHalfHeight
+                    topMargin += displacement
+                }
+            }
             barProgress.translationY = (barBackground.height * (maxValue - progress) / maxValue).toFloat()
             invalidate()
         }
