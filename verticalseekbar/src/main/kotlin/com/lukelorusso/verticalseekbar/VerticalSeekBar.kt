@@ -388,11 +388,14 @@ open class VerticalSeekBar constructor(context: Context, attrs: AttributeSet) : 
                 val rawY = event.rawY.roundToInt()
                 when (event.action and MotionEvent.ACTION_MASK) {
                     MotionEvent.ACTION_DOWN -> { // here we get the max top y coordinate (yDelta)
-                        yDelta = rawY - (thumb.layoutParams as LayoutParams).topMargin
+                        yDelta = rawY +
+                                (barCardView.layoutParams as LayoutParams).topMargin -
+                                (thumb.layoutParams as LayoutParams).topMargin -
+                                thumb.measuredHeight / 2
                     }
                     MotionEvent.ACTION_MOVE -> {
                         val positionY = rawY - yDelta // here we calculate the displacement
-                        val fillHeight = height - thumb.height
+                        val fillHeight = barCardView.measuredHeight
                         when { // here we update progress
                             positionY in 1 until fillHeight -> {
                                 val newValue = maxValue - (positionY.toFloat() * maxValue / fillHeight)
