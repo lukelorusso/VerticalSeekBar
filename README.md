@@ -1,7 +1,7 @@
 VerticalSeekBar
 ===============
 
-[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) [![Platform](https://img.shields.io/badge/platform-android-green.svg)](http://developer.android.com/index.html) [![API](https://img.shields.io/badge/API-21%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=21) [![Download](https://api.bintray.com/packages/lukelorusso/maven/com.lukelorusso:verticalseekbar/images/download.svg?version=1.1.2) ](https://bintray.com/lukelorusso/maven/com.lukelorusso:verticalseekbar/1.1.2/link)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) [![Platform](https://img.shields.io/badge/platform-android-green.svg)](http://developer.android.com/index.html) [![API](https://img.shields.io/badge/API-16%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=16) [![Download](https://api.bintray.com/packages/lukelorusso/maven/com.lukelorusso:verticalseekbar/images/download.svg?version=1.1.4) ](https://bintray.com/lukelorusso/maven/com.lukelorusso:verticalseekbar/1.1.4/link)
 
 ## Presentation ##
 
@@ -35,7 +35,7 @@ What you got:
 Make sure to include the library in your app's build.gradle:
 
 ```groovy
-    implementation 'com.lukelorusso:verticalseekbar:1.1.2'
+    implementation 'com.lukelorusso:verticalseekbar:1.1.4'
 ```  
 
 Add the view to your layout:
@@ -50,11 +50,13 @@ maybe add some attributes... here you got some, we'll discuss them later
         ...
         app:vsb_click_to_set_progress="false"
         app:vsb_bar_corner_radius="15dp"
-        app:vsb_bar_width="15dp"
+        app:vsb_bar_width="60dp"
         app:vsb_bar_background="#eeeeee"
         app:vsb_bar_progress_gradient_end="#4dd0e1"
         app:vsb_bar_progress_gradient_start="#03a2ba"
+        app:vsb_max_placeholder_position="inside"
         app:vsb_max_placeholder_src="@drawable/max_placeholder"
+        app:vsb_min_placeholder_position="inside"
         app:vsb_min_placeholder_src="@drawable/min_placeholder"
         app:vsb_progress="50"
         app:vsb_show_thumb="true"
@@ -121,8 +123,10 @@ To set minimum and/or maximum placeholders (`null` is a possible value to remove
 ```kotlin
 mainVerticalSeekBar.minPlaceholderDrawable = getDrawable(R.drawable.my_min_placeholder)
 mainVerticalSeekBar.maxPlaceholderDrawable = getDrawable(R.drawable.my_max_placeholder)
-// custom placeholders' position coming soon
 ```
+
+Since v1.1.4 you can also choose placeholders' position (only via XML for now)  
+You can choose between `{"inside", "outside", "middle"}` (`"middle"` by default)
 
 Now about the thumb placeholder 👆  
 It is child of a `androidx.cardview.widget.CardView`. You can choose the color tint and the corner radius of the CardView:
