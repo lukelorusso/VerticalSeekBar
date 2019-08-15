@@ -1,7 +1,7 @@
 VerticalSeekBar
 ===============
 
-[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) [![Platform](https://img.shields.io/badge/platform-android-green.svg)](http://developer.android.com/index.html) [![API](https://img.shields.io/badge/API-16%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=16) [![Download](https://api.bintray.com/packages/lukelorusso/maven/com.lukelorusso:verticalseekbar/images/download.svg?version=1.1.5) ](https://bintray.com/lukelorusso/maven/com.lukelorusso:verticalseekbar/1.1.5/link)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) [![Platform](https://img.shields.io/badge/platform-android-green.svg)](http://developer.android.com/index.html) [![API](https://img.shields.io/badge/API-16%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=16) [![Download](https://api.bintray.com/packages/lukelorusso/maven/com.lukelorusso:verticalseekbar/images/download.svg?version=1.1.6) ](https://bintray.com/lukelorusso/maven/com.lukelorusso:verticalseekbar/1.1.6/link)
 
 ## Presentation ##
 
@@ -35,7 +35,7 @@ What you got:
 Make sure to include the library in your app's build.gradle:
 
 ```groovy
-    implementation 'com.lukelorusso:verticalseekbar:1.1.5'
+    implementation 'com.lukelorusso:verticalseekbar:1.1.6'
 ```  
 
 Add the view to your layout:
@@ -165,6 +165,14 @@ mainVerticalSeekBar.clickToSetProgress = true
 ```
 
 Try to change those booleans too see other possibilities!
+
+## Still want more? ##
+
+If this level of customization is not enough for you, I have one last good news: the seekbar layout is ENTIRELY CUSTOMIZABLE!
+
+Just pick the original [**layout_verticalseekbar.xml**](/verticalseekbar/src/main/res/layout/layout_verticalseekbar.xml) and put it in your project's `res/layout` folder.
+
+Now you can modify it as you wish, remembering to keep all the original ids! 😉
 
 - - -
 

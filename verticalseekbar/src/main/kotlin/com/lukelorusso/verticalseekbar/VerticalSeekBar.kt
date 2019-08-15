@@ -281,11 +281,17 @@ open class VerticalSeekBar constructor(context: Context, attrs: AttributeSet) : 
         if (initEnded) {
             initEnded = false // will be released at the end
 
-            val thumbCardView: CardView? =
-                thumb.findViewById<CardView>(R.id.thumbCardView) // nullable for customization
+            var thumbCardView: CardView? = null // nullable for customization
+            try {
+                thumbCardView = thumb.findViewById(R.id.thumbCardView)
+            } catch (ignored: NoSuchFieldError) {}
 
-            val thumbPlaceholder: ImageView? =
-                thumb.findViewById<ImageView>(R.id.thumbPlaceholder) // nullable for customization
+
+            var thumbPlaceholder: ImageView? = null // nullable for customization
+            try {
+                thumbPlaceholder = thumb.findViewById(R.id.thumbPlaceholder)
+            } catch (ignored: NoSuchFieldError) {}
+
 
             // Customizing drawableCardView
             barCardView.layoutParams.width = barWidth ?: 0
@@ -352,7 +358,7 @@ open class VerticalSeekBar constructor(context: Context, attrs: AttributeSet) : 
                     if (showThumb) thumb.measuredHeight / 2
                     else 0
 
-                val maxPlaceholderHalfHeight = maxPlaceholder.drawable.intrinsicHeight / 2
+                val maxPlaceholderHalfHeight = maxPlaceholder.drawable?.intrinsicHeight ?: 0 / 2
                 when (maxPlaceholderPosition) {
                     Placeholder.INSIDE -> {
                         topMargin = thumbHalfHeight
@@ -373,7 +379,7 @@ open class VerticalSeekBar constructor(context: Context, attrs: AttributeSet) : 
                 maxPlaceholderLayoutParams.bottomMargin = maxPlaceholderLayoutParams.topMargin
                 maxPlaceholder.layoutParams = maxPlaceholderLayoutParams
 
-                val minPlaceholderHalfHeight = minPlaceholder.drawable.intrinsicHeight / 2
+                val minPlaceholderHalfHeight = minPlaceholder.drawable?.intrinsicHeight ?: 0 / 2
                 when (minPlaceholderPosition) {
                     Placeholder.INSIDE -> {
                         bottomMargin = thumbHalfHeight
