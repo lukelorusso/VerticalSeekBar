@@ -5,7 +5,7 @@ VerticalSeekBar
 
 ## Presentation ##
 
-![Demo](demo.gif)
+![Demo](press/demo.gif)
 
 This is the source code of an Android library: `-=:[ VerticalSeekBar ]:=-`
 
@@ -179,6 +179,10 @@ Now you can modify it as you wish; just remember to keep all the original ids! ð
 # Explore! #
 
 Feel free to checkout and launch the example app ðŸŽ¡
+
+Also, see where using this library has been the perfect choice:
+
+![ColorBlindClick](press/colorblindclick_launcher_round.png) [**ColorBlindClick**](https://play.google.com/store/apps/details?id=com.lukelorusso.colorblindclick)
 
 - - -
 
