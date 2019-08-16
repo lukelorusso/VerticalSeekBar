@@ -127,7 +127,7 @@ mainVerticalSeekBar.maxPlaceholderDrawable = getDrawable(R.drawable.my_max_place
 
 Since v1.1.4 you can also choose placeholders' position  
 You can choose between `{"inside", "outside", "middle"}` (`"middle"` by default)  
-Programmatically it will be:
+Programmatically, it will be:
 ```kotlin
 mainVerticalSeekBar.minPlaceholderPosition = VerticalSeekBar.Placeholder.INSIDE
 mainVerticalSeekBar.maxPlaceholderPosition = VerticalSeekBar.Placeholder.OUTSIDE
@@ -168,11 +168,11 @@ Try to change those booleans too see other possibilities!
 
 ## Still want more? ##
 
-If this level of customization is not enough for you, I have one last good news: the seekbar layout is ENTIRELY CUSTOMIZABLE!
+If this level of customization is not enough, I have one last good news for you: the seekbar layout is ENTIRELY CUSTOMIZABLE!
 
-Just pick the original [**layout_verticalseekbar.xml**](/verticalseekbar/src/main/res/layout/layout_verticalseekbar.xml) and put it in your project's `res/layout` folder.
+You can pick the original [**layout_verticalseekbar.xml**](/verticalseekbar/src/main/res/layout/layout_verticalseekbar.xml) and put it in your project's `res/layout` folder.
 
-Now you can modify it as you wish, remembering to keep all the original ids! 😉
+Now you can modify it as you wish; just remember to keep all the original ids! 😉 (`thumbCardView` and `thumbPlaceholder` can be safely removed)
 
 - - -
 
