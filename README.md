@@ -182,7 +182,8 @@ Feel free to checkout and launch the example app 🎡
 
 Also, see where using this library has been the perfect choice:
 
-![ColorBlindClick](press/colorblindclick_launcher.png) [**ColorBlindClick**](https://play.google.com/store/apps/details?id=com.lukelorusso.colorblindclick)
+![ColorBlindClick](press/colorblindclick_launcher.png)
+[**ColorBlindClick**](https://play.google.com/store/apps/details?id=com.lukelorusso.colorblindclick)
 
 - - -
 
