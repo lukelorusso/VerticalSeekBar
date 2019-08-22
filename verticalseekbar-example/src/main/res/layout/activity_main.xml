@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -15,19 +14,19 @@
         android:padding="15dp"
         android:text="@string/title"
         android:textSize="18sp"
-        android:textStyle="italic"/>
+        android:textStyle="italic" />
 
     <com.lukelorusso.verticalseekbar.VerticalSeekBar
         android:id="@+id/mainVerticalSeekBar"
         android:layout_width="160dp"
         android:layout_height="280dp"
         android:layout_gravity="center"
-        app:vsb_click_to_set_progress="false"
-        app:vsb_bar_corner_radius="15dp"
-        app:vsb_bar_width="60dp"
         app:vsb_bar_background="#eeeeee"
+        app:vsb_bar_corner_radius="15dp"
         app:vsb_bar_progress_gradient_end="#4dd0e1"
         app:vsb_bar_progress_gradient_start="#03a2ba"
+        app:vsb_bar_width="60dp"
+        app:vsb_click_to_set_progress="false"
         app:vsb_max_placeholder_position="inside"
         app:vsb_max_placeholder_src="@drawable/max_placeholder"
         app:vsb_min_placeholder_position="inside"
@@ -42,7 +41,7 @@
         android:id="@+id/mainProgressValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:layout_gravity="center" />
+        android:layout_gravity="center"
+        android:layout_marginTop="15dp" />
 
 </LinearLayout>

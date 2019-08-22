@@ -358,7 +358,7 @@ open class VerticalSeekBar constructor(context: Context, attrs: AttributeSet) : 
                     if (showThumb) thumb.measuredHeight / 2
                     else 0
 
-                val maxPlaceholderHalfHeight = maxPlaceholder.drawable?.intrinsicHeight ?: 0 / 2
+                val maxPlaceholderHalfHeight = (maxPlaceholder.drawable?.intrinsicHeight ?: 0) / 2
                 when (maxPlaceholderPosition) {
                     Placeholder.INSIDE -> {
                         topMargin = thumbHalfHeight
@@ -379,7 +379,7 @@ open class VerticalSeekBar constructor(context: Context, attrs: AttributeSet) : 
                 maxPlaceholderLayoutParams.bottomMargin = maxPlaceholderLayoutParams.topMargin
                 maxPlaceholder.layoutParams = maxPlaceholderLayoutParams
 
-                val minPlaceholderHalfHeight = minPlaceholder.drawable?.intrinsicHeight ?: 0 / 2
+                val minPlaceholderHalfHeight = (minPlaceholder.drawable?.intrinsicHeight ?: 0) / 2
                 when (minPlaceholderPosition) {
                     Placeholder.INSIDE -> {
                         bottomMargin = thumbHalfHeight
