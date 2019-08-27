@@ -26,7 +26,7 @@
         app:vsb_bar_progress_gradient_end="#4dd0e1"
         app:vsb_bar_progress_gradient_start="#03a2ba"
         app:vsb_bar_width="60dp"
-        app:vsb_click_to_set_progress="false"
+        app:vsb_click_to_set_progress="true"
         app:vsb_max_placeholder_position="inside"
         app:vsb_max_placeholder_src="@drawable/max_placeholder"
         app:vsb_min_placeholder_position="inside"
