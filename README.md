@@ -4,7 +4,7 @@ VerticalSeekBar
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Platform](https://img.shields.io/badge/platform-android-green.svg)](http://developer.android.com/index.html)
 [![API](https://img.shields.io/badge/API-16%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=16)
-<br>
+
 [![Android Weekly](https://img.shields.io/badge/Android%20Weekly-%23377-orange.svg)](https://androidweekly.net/issues/issue-377)
 [![Download](https://api.bintray.com/packages/lukelorusso/maven/com.lukelorusso:verticalseekbar/images/download.svg?version=1.2.0) ](https://bintray.com/lukelorusso/maven/com.lukelorusso:verticalseekbar/1.2.0/link)
 
@@ -13,6 +13,8 @@ VerticalSeekBar
 ![Demo](press/demo.gif)
 
 This is the source code of an Android library: `-=:[ VerticalSeekBar ]:=-`
+
+📃 Check also the [**Medium article**](https://blog.usejournal.com/android-a-custom-vertical-seekbar-how-to-reinvent-the-wheel-c07f28960f8f?source=friends_link&sk=eb8917b7f046a2152066ce8b58c81c7b) about it!
 
 - - -
 
@@ -189,7 +191,7 @@ Feel free to checkout and launch the example app 🎡
 
 Also, see where using this library has been the perfect choice:
 
-![ColorBlindClick](press/colorblindclick_launcher.png)  
+![[ColorBlindClick](press/colorblindclick_launcher.png)](https://play.google.com/store/apps/details?id=com.lukelorusso.colorblindclick)  
 [**ColorBlindClick**](https://play.google.com/store/apps/details?id=com.lukelorusso.colorblindclick)
 
 - - -
