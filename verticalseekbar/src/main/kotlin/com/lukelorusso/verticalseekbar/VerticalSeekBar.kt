@@ -22,7 +22,11 @@ import kotlin.math.roundToInt
 /**
  * A nicer, redesigned and vertical SeekBar
  */
-open class VerticalSeekBar constructor(context: Context, attrs: AttributeSet) : FrameLayout(context, attrs) {
+open class VerticalSeekBar @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
+) : FrameLayout(context, attrs, defStyleAttr) {
 
     companion object {
         private const val DEFAULT_MAX_VALUE = 100
@@ -167,98 +171,119 @@ open class VerticalSeekBar constructor(context: Context, attrs: AttributeSet) : 
             updateViews()
         }
     private var yDelta: Int = 0
-    private var initEnded = false // if true allows the view to be updated after setting an attribute programmatically
+    private var initEnded =
+        false // if true allows the view to be updated after setting an attribute programmatically
 
     init {
         init(context, attrs)
     }
 
-    private fun init(context: Context, attrs: AttributeSet) {
+    private fun init(context: Context, attrs: AttributeSet?) {
         inflate(context, R.layout.layout_verticalseekbar, this)
 
-        val attributes = context.obtainStyledAttributes(attrs, R.styleable.VerticalSeekBar, 0, 0)
-        try {
-            clickToSetProgress =
-                attributes.getBoolean(R.styleable.VerticalSeekBar_vsb_click_to_set_progress, clickToSetProgress)
-            barCornerRadius = attributes.getLayoutDimension(
-                R.styleable.VerticalSeekBar_vsb_bar_corner_radius,
-                barCornerRadius
-            )
-            barBackgroundStartColor =
-                attributes.getColor(
-                    R.styleable.VerticalSeekBar_vsb_bar_background_gradient_start,
-                    barBackgroundStartColor
+        if (attrs != null) {
+            val attributes =
+                context.obtainStyledAttributes(attrs, R.styleable.VerticalSeekBar, 0, 0)
+            try {
+                clickToSetProgress =
+                    attributes.getBoolean(
+                        R.styleable.VerticalSeekBar_vsb_click_to_set_progress,
+                        clickToSetProgress
+                    )
+                barCornerRadius = attributes.getLayoutDimension(
+                    R.styleable.VerticalSeekBar_vsb_bar_corner_radius,
+                    barCornerRadius
                 )
-            barBackgroundEndColor =
-                attributes.getColor(
-                    R.styleable.VerticalSeekBar_vsb_bar_background_gradient_end,
-                    barBackgroundEndColor
-                )
-            attributes.getDrawable(R.styleable.VerticalSeekBar_vsb_bar_background)?.also {
-                barBackgroundDrawable = it
-            }
-            barProgressStartColor =
-                attributes.getColor(
-                    R.styleable.VerticalSeekBar_vsb_bar_progress_gradient_start,
-                    barProgressStartColor
-                )
-            barProgressEndColor =
-                attributes.getColor(
-                    R.styleable.VerticalSeekBar_vsb_bar_progress_gradient_end,
-                    barProgressEndColor
-                )
-            attributes.getDrawable(R.styleable.VerticalSeekBar_vsb_bar_progress).also {
-                barProgressDrawable = it
-            }
-            barWidth = attributes.getDimensionPixelSize(
-                R.styleable.VerticalSeekBar_vsb_bar_width,
-                barWidth ?: container.layoutParams.width
-            )
-            attributes.getLayoutDimension(R.styleable.VerticalSeekBar_android_layout_width, minLayoutWidth).also {
-                container.layoutParams.width = if (it != -1 && it < minLayoutWidth) minLayoutWidth // wrap_content
-                else it
-            }
-            attributes.getLayoutDimension(R.styleable.VerticalSeekBar_android_layout_height, minLayoutHeight).also {
-                container.layoutParams.height =
-                    if (it != -1 && it < minLayoutHeight) minLayoutHeight // wrap_content
-                    else it
-            }
-            attributes.getDrawable(R.styleable.VerticalSeekBar_vsb_max_placeholder_src).also {
-                maxPlaceholderDrawable = it
-            }
-            maxPlaceholderPosition = Placeholder.values()[attributes.getInt(
-                R.styleable.VerticalSeekBar_vsb_max_placeholder_position,
-                maxPlaceholderPosition.ordinal
-            )]
-            attributes.getDrawable(R.styleable.VerticalSeekBar_vsb_min_placeholder_src).also {
-                minPlaceholderDrawable = it
-            }
-            minPlaceholderPosition = Placeholder.values()[attributes.getInt(
-                R.styleable.VerticalSeekBar_vsb_min_placeholder_position,
-                minPlaceholderPosition.ordinal
-            )]
-            showThumb = attributes.getBoolean(R.styleable.VerticalSeekBar_vsb_show_thumb, showThumb)
-            thumbContainerColor =
-                attributes.getColor(R.styleable.VerticalSeekBar_vsb_thumb_container_tint, thumbContainerColor)
-            thumbContainerCornerRadius = attributes.getLayoutDimension(
-                R.styleable.VerticalSeekBar_vsb_thumb_container_corner_radius,
-                thumbContainerCornerRadius
-            )
-            attributes.getDrawable(R.styleable.VerticalSeekBar_vsb_thumb_placeholder_src).also {
-                thumbPlaceholderDrawable = it
-            }
-            attributes.getInt(R.styleable.VerticalSeekBar_vsb_progress, progress).also {
-                progress = when {
-                    it < 0 -> 0
-                    it > maxValue -> maxValue
-                    else -> it
+                barBackgroundStartColor =
+                    attributes.getColor(
+                        R.styleable.VerticalSeekBar_vsb_bar_background_gradient_start,
+                        barBackgroundStartColor
+                    )
+                barBackgroundEndColor =
+                    attributes.getColor(
+                        R.styleable.VerticalSeekBar_vsb_bar_background_gradient_end,
+                        barBackgroundEndColor
+                    )
+                attributes.getDrawable(R.styleable.VerticalSeekBar_vsb_bar_background)?.also {
+                    barBackgroundDrawable = it
                 }
-            }
-            useThumbToSetProgress =
-                attributes.getBoolean(R.styleable.VerticalSeekBar_vsb_use_thumb_to_set_progress, useThumbToSetProgress)
+                barProgressStartColor =
+                    attributes.getColor(
+                        R.styleable.VerticalSeekBar_vsb_bar_progress_gradient_start,
+                        barProgressStartColor
+                    )
+                barProgressEndColor =
+                    attributes.getColor(
+                        R.styleable.VerticalSeekBar_vsb_bar_progress_gradient_end,
+                        barProgressEndColor
+                    )
+                attributes.getDrawable(R.styleable.VerticalSeekBar_vsb_bar_progress).also {
+                    barProgressDrawable = it
+                }
+                barWidth = attributes.getDimensionPixelSize(
+                    R.styleable.VerticalSeekBar_vsb_bar_width,
+                    barWidth ?: container.layoutParams.width
+                )
+                attributes.getLayoutDimension(
+                    R.styleable.VerticalSeekBar_android_layout_width,
+                    minLayoutWidth
+                ).also {
+                    container.layoutParams.width =
+                        if (it != -1 && it < minLayoutWidth) minLayoutWidth // wrap_content
+                        else it
+                }
+                attributes.getLayoutDimension(
+                    R.styleable.VerticalSeekBar_android_layout_height,
+                    minLayoutHeight
+                ).also {
+                    container.layoutParams.height =
+                        if (it != -1 && it < minLayoutHeight) minLayoutHeight // wrap_content
+                        else it
+                }
+                attributes.getDrawable(R.styleable.VerticalSeekBar_vsb_max_placeholder_src).also {
+                    maxPlaceholderDrawable = it
+                }
+                maxPlaceholderPosition = Placeholder.values()[attributes.getInt(
+                    R.styleable.VerticalSeekBar_vsb_max_placeholder_position,
+                    maxPlaceholderPosition.ordinal
+                )]
+                attributes.getDrawable(R.styleable.VerticalSeekBar_vsb_min_placeholder_src).also {
+                    minPlaceholderDrawable = it
+                }
+                minPlaceholderPosition = Placeholder.values()[attributes.getInt(
+                    R.styleable.VerticalSeekBar_vsb_min_placeholder_position,
+                    minPlaceholderPosition.ordinal
+                )]
+                showThumb =
+                    attributes.getBoolean(R.styleable.VerticalSeekBar_vsb_show_thumb, showThumb)
+                thumbContainerColor =
+                    attributes.getColor(
+                        R.styleable.VerticalSeekBar_vsb_thumb_container_tint,
+                        thumbContainerColor
+                    )
+                thumbContainerCornerRadius = attributes.getLayoutDimension(
+                    R.styleable.VerticalSeekBar_vsb_thumb_container_corner_radius,
+                    thumbContainerCornerRadius
+                )
+                attributes.getDrawable(R.styleable.VerticalSeekBar_vsb_thumb_placeholder_src).also {
+                    thumbPlaceholderDrawable = it
+                }
+                attributes.getInt(R.styleable.VerticalSeekBar_vsb_progress, progress).also {
+                    progress = when {
+                        it < 0 -> 0
+                        it > maxValue -> maxValue
+                        else -> it
+                    }
+                }
+                useThumbToSetProgress =
+                    attributes.getBoolean(
+                        R.styleable.VerticalSeekBar_vsb_use_thumb_to_set_progress,
+                        useThumbToSetProgress
+                    )
 
-        } finally {
-            attributes.recycle()
+            } finally {
+                attributes.recycle()
+            }
         }
 
         initEnded = true
@@ -284,13 +309,15 @@ open class VerticalSeekBar constructor(context: Context, attrs: AttributeSet) : 
             var thumbCardView: CardView? = null // nullable for customization
             try {
                 thumbCardView = thumb.findViewById(R.id.thumbCardView)
-            } catch (ignored: NoSuchFieldError) {}
+            } catch (ignored: NoSuchFieldError) {
+            }
 
 
             var thumbPlaceholder: ImageView? = null // nullable for customization
             try {
                 thumbPlaceholder = thumb.findViewById(R.id.thumbPlaceholder)
-            } catch (ignored: NoSuchFieldError) {}
+            } catch (ignored: NoSuchFieldError) {
+            }
 
 
             // Customizing drawableCardView
@@ -346,7 +373,9 @@ open class VerticalSeekBar constructor(context: Context, attrs: AttributeSet) : 
                     width = thumb.measuredWidth + thumbMeasureIncrease
                     height = thumb.measuredHeight + thumbMeasureIncrease
                     thumbCardView?.layoutParams =
-                        (thumbCardView?.layoutParams as LayoutParams).apply { topMargin = thumbMeasureIncrease / 2 }
+                        (thumbCardView?.layoutParams as LayoutParams).apply {
+                            topMargin = thumbMeasureIncrease / 2
+                        }
                 }
             } else thumb.visibility = View.GONE
 
@@ -369,7 +398,8 @@ open class VerticalSeekBar constructor(context: Context, attrs: AttributeSet) : 
                                 if (thumbHalfHeight > maxPlaceholder.drawable.intrinsicHeight)
                                     thumbHalfHeight - maxPlaceholder.drawable.intrinsicHeight
                                 else 0
-                        maxPlaceholderLayoutParams.topMargin = topMargin - maxPlaceholder.drawable.intrinsicHeight
+                        maxPlaceholderLayoutParams.topMargin =
+                            topMargin - maxPlaceholder.drawable.intrinsicHeight
                     }
                     else -> {
                         topMargin = max(thumbHalfHeight, maxPlaceholderHalfHeight)
@@ -390,11 +420,13 @@ open class VerticalSeekBar constructor(context: Context, attrs: AttributeSet) : 
                                 if (thumbHalfHeight > minPlaceholder.drawable.intrinsicHeight)
                                     thumbHalfHeight - minPlaceholder.drawable.intrinsicHeight
                                 else 0
-                        minPlaceholderLayoutParams.bottomMargin = bottomMargin - minPlaceholder.drawable.intrinsicHeight
+                        minPlaceholderLayoutParams.bottomMargin =
+                            bottomMargin - minPlaceholder.drawable.intrinsicHeight
                     }
                     else -> {
                         bottomMargin = max(thumbHalfHeight, minPlaceholderHalfHeight)
-                        minPlaceholderLayoutParams.bottomMargin = bottomMargin - minPlaceholderHalfHeight
+                        minPlaceholderLayoutParams.bottomMargin =
+                            bottomMargin - minPlaceholderHalfHeight
                     }
                 }
                 bottomMargin += thumbMeasureIncrease
@@ -418,7 +450,8 @@ open class VerticalSeekBar constructor(context: Context, attrs: AttributeSet) : 
                         val fillHeight = barCardView.measuredHeight
                         when { // here we update progress
                             positionY in 1 until fillHeight -> {
-                                val newValue = maxValue - (positionY.toFloat() * maxValue / fillHeight)
+                                val newValue =
+                                    maxValue - (positionY.toFloat() * maxValue / fillHeight)
                                 progress = newValue.roundToInt()
                             }
                             positionY <= 0 -> progress = maxValue
@@ -462,7 +495,8 @@ open class VerticalSeekBar constructor(context: Context, attrs: AttributeSet) : 
     private fun updateViews() {
         if (initEnded) post {
             val barCardViewLayoutParams = barCardView.layoutParams as LayoutParams
-            val fillHeight = height - barCardViewLayoutParams.topMargin - barCardViewLayoutParams.bottomMargin
+            val fillHeight =
+                height - barCardViewLayoutParams.topMargin - barCardViewLayoutParams.bottomMargin
             val marginByProgress = fillHeight - (progress * fillHeight / maxValue)
             thumb.layoutParams = (thumb.layoutParams as LayoutParams).apply {
                 topMargin = marginByProgress
@@ -472,7 +506,8 @@ open class VerticalSeekBar constructor(context: Context, attrs: AttributeSet) : 
                     topMargin += displacement
                 }
             }
-            barProgress.translationY = (barBackground.height * (maxValue - progress) / maxValue).toFloat()
+            barProgress.translationY =
+                (barBackground.height * (maxValue - progress) / maxValue).toFloat()
             invalidate()
         }
     }

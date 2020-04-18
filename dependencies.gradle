@@ -8,8 +8,8 @@ allprojects {
 ext {
 
     // APP VERSION
-    androidVersionCode          = 10
-    androidVersionName          = '1.2.0' // REMEMBER: also update README.md (all instances)
+    androidVersionCode          = 11
+    androidVersionName          = '1.2.1' // REMEMBER: also update README.md (all instances)
 
     // ANDROID VERSION
     androidCompileSdkVersion    = 28
@@ -23,8 +23,8 @@ ext {
     kotlinStdlib                = "$kotlinStdlibGroupId:$kotlinStdlibArtifactId:$kotlinStdlibVersion"
 
     // ANDROID LIB
-    androidXAppCompatVersion    = '1.0.2'
-    androidXAppCompat           = "androidx.appcompat:appcompat:$androidXAppCompatVersion"
+    androidXVersion             = '1.1.0'
+    androidXAppCompat           = "androidx.appcompat:appcompat:$androidXVersion"
     cardViewGroupId             = "androidx.cardview"
     cardViewArtifactId          = "cardview"
     cardViewVersion             = '1.0.0'

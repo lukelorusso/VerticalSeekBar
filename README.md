@@ -6,7 +6,7 @@ VerticalSeekBar
 [![API](https://img.shields.io/badge/API-16%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=16)
 
 [![Android Weekly](https://img.shields.io/badge/Android%20Weekly-%23377-orange.svg)](https://androidweekly.net/issues/issue-377)
-[![Download](https://api.bintray.com/packages/lukelorusso/maven/com.lukelorusso:verticalseekbar/images/download.svg?version=1.2.0) ](https://bintray.com/lukelorusso/maven/com.lukelorusso:verticalseekbar/1.2.0/link)
+[![Download](https://api.bintray.com/packages/lukelorusso/maven/com.lukelorusso:verticalseekbar/images/download.svg?version=1.2.1) ](https://bintray.com/lukelorusso/maven/com.lukelorusso:verticalseekbar/1.2.1/link)
 
 ## Presentation ##
 
@@ -42,7 +42,7 @@ What you got:
 Make sure to include the library in your app's build.gradle:
 
 ```groovy
-    implementation 'com.lukelorusso:verticalseekbar:1.2.0'
+    implementation 'com.lukelorusso:verticalseekbar:1.2.1'
 ```  
 
 Add the view to your layout:
@@ -77,6 +77,20 @@ maybe add some attributes... here you got some, we'll discuss them later
 All of them can be also set programmatically.
 
 (Please note: it's strongly recommended to avoid pre-1.2.0 versions due to inconsistencies compared to this guide)
+
+## For Java projects ##
+
+Someone experienced this `InflateException`. For those guys, it's worth noticing that this is a KOTLIN library! The reason why you're getting an `InvocationTargetException` is because, in case you're still on Java, you also have to specify:
+
+```java
+implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.3.+'
+// or one of the -jre7, -jre8 stdlib depending on your config
+// put the most up-to-date version
+```
+
+on your app module's `build.gradle`.
+
+Another solution is just to... migrate to Kotlin guys!
 
 - - -
 
