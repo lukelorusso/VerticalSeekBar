@@ -6,7 +6,7 @@ VerticalSeekBar
 [![API](https://img.shields.io/badge/API-16%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=16)
 
 [![Android Weekly](https://img.shields.io/badge/Android%20Weekly-%23377-orange.svg)](https://androidweekly.net/issues/issue-377)
-[![Download](https://api.bintray.com/packages/lukelorusso/maven/com.lukelorusso:verticalseekbar/images/download.svg?version=1.2.1) ](https://bintray.com/lukelorusso/maven/com.lukelorusso:verticalseekbar/1.2.1/link)
+[![Download](https://api.bintray.com/packages/lukelorusso/maven/com.lukelorusso:verticalseekbar/images/download.svg?version=1.2.2) ](https://bintray.com/lukelorusso/maven/com.lukelorusso:verticalseekbar/1.2.2/link)
 
 ## Presentation ##
 
@@ -42,7 +42,7 @@ What you got:
 Make sure to include the library in your app's build.gradle:
 
 ```groovy
-    implementation 'com.lukelorusso:verticalseekbar:1.2.1'
+    implementation 'com.lukelorusso:verticalseekbar:1.2.2'
 ```  
 
 Add the view to your layout:
@@ -188,6 +188,57 @@ mainVerticalSeekBar.clickToSetProgress = true
 ```
 
 Try to change those booleans too see other possibilities!
+
+## Listeners ##
+
+You have the possibility to set a listener for progress changes:
+
+```kotlin
+mainVerticalSeekBar.setOnProgressChangeListener { progressValue ->
+    Log.d("VerticalSeekBar", "PROGRESS CHANGED at value: $progressValue")
+}
+
+mainVerticalSeekBar.setOnPressListener { progressValue ->
+    Log.d("VerticalSeekBar", "PRESSED at value: $progressValue")
+}
+
+mainVerticalSeekBar.setOnReleaseListener { progressValue ->
+    Log.d("VerticalSeekBar", "RELEASED at value: $progressValue")
+}
+```
+
+This is how it will look like using **Java**:
+```java
+VerticalSeekBar mainVerticalSeekBar = findViewById(R.id.mainVerticalSeekBar);
+mainVerticalSeekBar.setOnProgressChangeListener(
+    new Function1<Integer, Unit>() {
+        @Override
+        public Unit invoke(Integer progressValue) {
+            Log.d("VerticalSeekBar", "PROGRESS CHANGED at value: " + progressValue);
+            return null;
+        }
+    }
+);
+mainVerticalSeekBar.setOnPressListener(
+    new Function1<Integer, Unit>() {
+        @Override
+        public Unit invoke(Integer progressValue) {
+            Log.d("VerticalSeekBar", "PRESSED at value: " + progressValue);
+            return null;
+        }
+    }
+);
+mainVerticalSeekBar.setOnReleaseListener(
+    new Function1<Integer, Unit>() {
+        @Override
+        public Unit invoke(Integer progressValue) {
+            Log.d("VerticalSeekBar", "RELEASED at value: " + progressValue);
+            return null;
+        }
+    }
+);
+// Too much verbose for you? Time to migrate to Kotlin!
+```
 
 ## Still want more? ##
 

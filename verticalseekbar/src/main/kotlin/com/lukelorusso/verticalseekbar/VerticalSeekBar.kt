@@ -42,6 +42,8 @@ open class VerticalSeekBar @JvmOverloads constructor(
     }
 
     private var onProgressChangeListener: ((Int) -> Unit)? = null
+    private var onPressListener: ((Int) -> Unit)? = null
+    private var onReleaseListener: ((Int) -> Unit)? = null
 
     var clickToSetProgress = true
         set(value) {
@@ -294,6 +296,14 @@ open class VerticalSeekBar @JvmOverloads constructor(
         this.onProgressChangeListener = listener
     }
 
+    fun setOnPressListener(listener: ((Int) -> Unit)?) {
+        this.onPressListener = listener
+    }
+
+    fun setOnReleaseListener(listener: ((Int) -> Unit)?) {
+        this.onReleaseListener = listener
+    }
+
     //region PROTECTED METHODS
     protected fun Context.dpToPixel(dp: Float): Float =
         dp * (resources.displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
@@ -439,12 +449,15 @@ open class VerticalSeekBar @JvmOverloads constructor(
             if (showThumb && useThumbToSetProgress) thumb.setOnTouchListener { thumb, event ->
                 val rawY = event.rawY.roundToInt()
                 when (event.action and MotionEvent.ACTION_MASK) {
+
                     MotionEvent.ACTION_DOWN -> { // here we get the max top y coordinate (yDelta)
                         yDelta = rawY +
                                 (barCardView.layoutParams as LayoutParams).topMargin -
                                 (thumb.layoutParams as LayoutParams).topMargin -
                                 thumb.measuredHeight / 2
+                        onPressListener?.invoke(progress)
                     }
+
                     MotionEvent.ACTION_MOVE -> {
                         val positionY = rawY - yDelta // here we calculate the displacement
                         val fillHeight = barCardView.measuredHeight
@@ -458,6 +471,9 @@ open class VerticalSeekBar @JvmOverloads constructor(
                             positionY >= fillHeight -> progress = 0
                         }
                     }
+
+                    MotionEvent.ACTION_UP -> onReleaseListener?.invoke(progress)
+
                 }
                 true
             } else thumb.setOnTouchListener(null)
@@ -477,8 +493,16 @@ open class VerticalSeekBar @JvmOverloads constructor(
                     }
                 }
                 when (event.action and MotionEvent.ACTION_MASK) {
-                    MotionEvent.ACTION_DOWN -> action.invoke()
+
+                    MotionEvent.ACTION_DOWN -> {
+                        action.invoke()
+                        onPressListener?.invoke(progress)
+                    }
+
                     MotionEvent.ACTION_MOVE -> if (useThumbToSetProgress) action.invoke()
+
+                    MotionEvent.ACTION_UP -> onReleaseListener?.invoke(progress)
+
                 }
                 true
             } else barCardView.setOnTouchListener(null)
