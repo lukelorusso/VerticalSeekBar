@@ -30,6 +30,7 @@ open class VerticalSeekBar @JvmOverloads constructor(
 
     companion object {
         private const val DEFAULT_MAX_VALUE = 100
+        private const val DEFAULT_PROGRESS = 50
         private const val DEFAULT_DRAWABLE_BACKGROUND: String = "#f6f6f6"
         private const val DEFAULT_DRAWABLE_PROGRESS_START: String = "#4D88E1"
         private const val DEFAULT_DRAWABLE_PROGRESS_END: String = "#7BA1DB"
@@ -159,7 +160,7 @@ open class VerticalSeekBar @JvmOverloads constructor(
             field = newValue
             updateViews()
         }
-    var progress: Int = 50
+    var progress: Int = DEFAULT_PROGRESS
         set(value) {
             val newValue = when {
                 value < 0 -> 0
@@ -270,12 +271,11 @@ open class VerticalSeekBar @JvmOverloads constructor(
                 attributes.getDrawable(R.styleable.VerticalSeekBar_vsb_thumb_placeholder_src).also {
                     thumbPlaceholderDrawable = it
                 }
+                attributes.getInt(R.styleable.VerticalSeekBar_vsb_max_value, maxValue).also {
+                    maxValue = it
+                }
                 attributes.getInt(R.styleable.VerticalSeekBar_vsb_progress, progress).also {
-                    progress = when {
-                        it < 0 -> 0
-                        it > maxValue -> maxValue
-                        else -> it
-                    }
+                    progress = it
                 }
                 useThumbToSetProgress =
                     attributes.getBoolean(

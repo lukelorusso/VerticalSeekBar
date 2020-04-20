@@ -6,7 +6,7 @@ VerticalSeekBar
 [![API](https://img.shields.io/badge/API-16%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=16)
 
 [![Android Weekly](https://img.shields.io/badge/Android%20Weekly-%23377-orange.svg)](https://androidweekly.net/issues/issue-377)
-[![Download](https://api.bintray.com/packages/lukelorusso/maven/com.lukelorusso:verticalseekbar/images/download.svg?version=1.2.2) ](https://bintray.com/lukelorusso/maven/com.lukelorusso:verticalseekbar/1.2.2/link)
+[![Download](https://api.bintray.com/packages/lukelorusso/maven/com.lukelorusso:verticalseekbar/images/download.svg?version=1.2.3) ](https://bintray.com/lukelorusso/maven/com.lukelorusso:verticalseekbar/1.2.3/link)
 
 ## Presentation ##
 
@@ -42,7 +42,7 @@ What you got:
 Make sure to include the library in your app's build.gradle:
 
 ```groovy
-    implementation 'com.lukelorusso:verticalseekbar:1.2.2'
+    implementation 'com.lukelorusso:verticalseekbar:1.2.3'
 ```  
 
 Add the view to your layout:
@@ -200,11 +200,11 @@ mainVerticalSeekBar.setOnProgressChangeListener { progressValue ->
 
 mainVerticalSeekBar.setOnPressListener { progressValue ->
     Log.d("VerticalSeekBar", "PRESSED at value: $progressValue")
-}
+} // since v.1.2.2 thanks to https://github.com/ModischFabrications
 
 mainVerticalSeekBar.setOnReleaseListener { progressValue ->
     Log.d("VerticalSeekBar", "RELEASED at value: $progressValue")
-}
+} // since v.1.2.2 thanks to https://github.com/ModischFabrications
 ```
 
 This is how it will look like using **Java**:
@@ -258,6 +258,10 @@ Also, see where using this library has been the perfect choice:
 
 [![ColorBlindClick](press/colorblindclick_launcher.png)](https://play.google.com/store/apps/details?id=com.lukelorusso.colorblindclick)  
 [**ColorBlindClick**](https://play.google.com/store/apps/details?id=com.lukelorusso.colorblindclick)
+
+
+[![MyPrevention](press/myprevention_launcher.png)](https://play.google.com/store/apps/details?id=fr.siaci.myprevention)
+[**MyPrevention**](https://play.google.com/store/apps/details?id=fr.siaci.myprevention)
 
 - - -
 

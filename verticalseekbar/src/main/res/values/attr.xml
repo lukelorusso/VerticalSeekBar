@@ -12,6 +12,7 @@
         <attr name="vsb_bar_progress_gradient_start" format="color" />
         <attr name="vsb_bar_progress_gradient_end" format="color" />
         <attr name="vsb_progress" format="integer" />
+        <attr name="vsb_max_value" format="integer" />
         <attr name="vsb_min_placeholder_position" format="enum">
             <enum name="outside" value="0"/>
             <enum name="inside" value="1"/>
