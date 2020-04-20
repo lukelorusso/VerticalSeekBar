@@ -260,7 +260,7 @@ Also, see where using this library has been the perfect choice:
 [**ColorBlindClick**](https://play.google.com/store/apps/details?id=com.lukelorusso.colorblindclick)
 
 
-[![MyPrevention](press/myprevention_launcher.png)](https://play.google.com/store/apps/details?id=fr.siaci.myprevention)
+[![MyPrevention](press/myprevention_launcher.png)](https://play.google.com/store/apps/details?id=fr.siaci.myprevention)  
 [**MyPrevention**](https://play.google.com/store/apps/details?id=fr.siaci.myprevention)
 
 - - -
