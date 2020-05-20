@@ -82,7 +82,7 @@ All of them can be also set programmatically.
 
 Someone experienced this `InflateException`. For those guys, it's worth noticing that this is a KOTLIN library! The reason why you're getting an `InvocationTargetException` is because, in case you're still on Java, you also have to specify:
 
-```java
+```gradle
 implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.3.+'
 // or one of the -jre7, -jre8 stdlib depending on your config
 // put the most up-to-date version
@@ -260,7 +260,7 @@ Also, see where using this library has been the perfect choice:
 [**ColorBlindClick**](https://play.google.com/store/apps/details?id=com.lukelorusso.colorblindclick)
 
 
-[![MyPrevention](press/myprevention_launcher.png)](https://play.google.com/store/apps/details?id=fr.siaci.myprevention)  
+[![MyPrevention](press/myprevention_launcher.png)](https://play.google.com/store/apps/details?id=fr.siaci.myprevention)
 [**MyPrevention**](https://play.google.com/store/apps/details?id=fr.siaci.myprevention)
 
 - - -
