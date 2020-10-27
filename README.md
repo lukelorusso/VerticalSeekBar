@@ -6,7 +6,7 @@ VerticalSeekBar
 [![API](https://img.shields.io/badge/API-16%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=16)
 
 [![Android Weekly](https://img.shields.io/badge/Android%20Weekly-%23377-orange.svg)](https://androidweekly.net/issues/issue-377)
-[![Download](https://api.bintray.com/packages/lukelorusso/maven/com.lukelorusso:verticalseekbar/images/download.svg?version=1.2.3) ](https://bintray.com/lukelorusso/maven/com.lukelorusso:verticalseekbar/1.2.3/link)
+[![Download](https://api.bintray.com/packages/lukelorusso/maven/com.lukelorusso:verticalseekbar/images/download.svg?version=1.2.4) ](https://bintray.com/lukelorusso/maven/com.lukelorusso:verticalseekbar/1.2.4/link)
 
 ## Presentation ##
 
@@ -42,7 +42,7 @@ What you got:
 Make sure to include the library in your app's build.gradle:
 
 ```groovy
-    implementation 'com.lukelorusso:verticalseekbar:1.2.3'
+    implementation 'com.lukelorusso:verticalseekbar:1.2.4'
 ```  
 
 Add the view to your layout:

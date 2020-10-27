@@ -4,7 +4,7 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'com.github.ben-manes.versions'
 
 android {
-    compileSdkVersion androidCompileSdkVersion
+    compileSdkVersion androidTargetSdkVersion
     defaultConfig {
         applicationId "com.lukelorusso.verticalseekbarsample"
         minSdkVersion androidMinSdkVersion

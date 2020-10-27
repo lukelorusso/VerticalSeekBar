@@ -6,7 +6,7 @@ apply plugin: 'maven-publish'
 apply plugin: 'com.github.ben-manes.versions'
 
 android {
-    compileSdkVersion androidCompileSdkVersion
+    compileSdkVersion androidTargetSdkVersion
     defaultConfig {
         minSdkVersion androidMinSdkVersion
         targetSdkVersion androidTargetSdkVersion
