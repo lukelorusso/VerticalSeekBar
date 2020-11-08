@@ -37,7 +37,7 @@ def libArtifactId = 'verticalseekbar'
 def libVersion = androidVersionName
 def libDesc = 'A nicer, redesigned and vertical SeekBar'
 def libLicenses = ['Apache-2.0']
-def libVCSUrl = 'https://github.com/lukelorusso/verticalseekbar.git'
+def libVCSUrl = "https://github.com/lukelorusso/${libArtifactId}.git"
 
 // Generate Source Jar
 task sourceJar(type: Jar) {
