@@ -1,9 +1,10 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
-apply plugin: 'com.jfrog.bintray'
-apply plugin: 'maven-publish'
+apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.github.ben-manes.versions'
+
+group='com.github.lukelorusso'
 
 android {
     compileSdkVersion androidTargetSdkVersion
@@ -29,65 +30,7 @@ dependencies {
     implementation kotlinStdlib
     implementation androidXAppCompat
     api cardView
+
+    // DEPENDENCY CHECK STRATEGY
+    dependencyUpdates.resolutionStrategy dependencyUpdatesStrategy
 }
-
-//region Publish to jCenter
-def libGroupId = 'com.lukelorusso'
-def libArtifactId = 'verticalseekbar'
-def libVersion = androidVersionName
-def libDesc = 'A nicer, redesigned and vertical SeekBar'
-def libLicenses = ['Apache-2.0']
-def libVCSUrl = "https://github.com/lukelorusso/${libArtifactId}.git"
-
-// Generate Source Jar
-task sourceJar(type: Jar) {
-    from android.sourceSets.main.java.srcDirs
-    archiveClassifier.set("sources")
-}
-
-// Create the publication with the pom configuration
-publishing {
-    publications {
-        MyPublication(MavenPublication) {
-            groupId libGroupId
-            artifactId libArtifactId
-            version libVersion
-
-            //The publication doesn't know about our dependencies, so we have to manually add them to the pom
-            pom.withXml {
-                def dependenciesNode = asNode().appendNode('dependencies')
-
-                def cardViewDepNode = dependenciesNode.appendNode('dependency')
-                cardViewDepNode.appendNode('groupId', cardViewGroupId)
-                cardViewDepNode.appendNode('artifactId', cardViewArtifactId)
-                cardViewDepNode.appendNode('version', cardViewVersion)
-            }
-
-            artifact(sourceJar)
-            artifact("$buildDir/outputs/aar/$libArtifactId-release.aar")
-        }
-    }
-}
-
-// Bintray config
-Properties properties = new Properties()
-properties.load(project.rootProject.file('local.properties').newDataInputStream())
-
-bintray {
-    user = properties.getProperty("bintray.user")
-    key = properties.getProperty("bintray.apikey")
-    publications = ['MyPublication']
-    pkg {
-        repo = "maven"
-        name = "$libGroupId:$libArtifactId"
-        desc = libDesc
-        licenses = libLicenses
-        vcsUrl = libVCSUrl
-        version {
-            name = libVersion
-            vcsTag = libVersion
-            released = new Date()
-        }
-    }
-}
-//endregion
