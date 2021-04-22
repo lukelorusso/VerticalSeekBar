@@ -8,12 +8,12 @@ allprojects {
 ext {
 
     // APP VERSION
-    androidVersionCode          = 14
-    androidVersionName          = '1.2.4' // REMEMBER: also update README.md (all instances)
+    androidVersionCode          = 15
+    androidVersionName          = '1.2.5' // REMEMBER: also update README.md
 
     // ANDROID VERSION
     androidMinSdkVersion        = 16
-    androidTargetSdkVersion     = 29
+    androidTargetSdkVersion     = 30
 
     // KOTLIN
     kotlinStdlibGroupId         = "org.jetbrains.kotlin"
@@ -28,5 +28,19 @@ ext {
     cardViewArtifactId          = "cardview"
     cardViewVersion             = '1.0.0'
     cardView                    = "$cardViewGroupId:$cardViewArtifactId:$cardViewVersion"
+
+    // DEPENDENCY CHECK STRATEGY
+    dependencyUpdatesStrategy = {
+        componentSelection { rules ->
+            rules.all { ComponentSelection selection ->
+                boolean rejected = ['alpha', 'beta', 'rc', 'cr', 'm'].any { qualifier ->
+                    selection.candidate.version ==~ /(?i).*[.-]${qualifier}[.\d-]*/
+                }
+                if (rejected) {
+                    selection.reject('Release candidate')
+                }
+            }
+        }
+    }
 
 }

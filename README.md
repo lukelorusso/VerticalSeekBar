@@ -1,12 +1,7 @@
 VerticalSeekBar
 ===============
 
-[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-[![Platform](https://img.shields.io/badge/platform-android-green.svg)](http://developer.android.com/index.html)
-[![API](https://img.shields.io/badge/API-16%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=16)
-
-[![Android Weekly](https://img.shields.io/badge/Android%20Weekly-%23377-orange.svg)](https://androidweekly.net/issues/issue-377)
-[![Download](https://api.bintray.com/packages/lukelorusso/maven/com.lukelorusso:verticalseekbar/images/download.svg?version=1.2.4) ](https://bintray.com/lukelorusso/maven/com.lukelorusso:verticalseekbar/1.2.4/link)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) [![Platform](https://img.shields.io/badge/platform-android-green.svg)](http://developer.android.com/index.html) [![API](https://img.shields.io/badge/API-16%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=16) [![Release](https://jitpack.io/v/lukelorusso/VerticalSeekBar.svg)](https://jitpack.io/#lukelorusso/VerticalSeekBar) [![Android Weekly](https://img.shields.io/badge/Android%20Weekly-%23377-orange.svg)](https://androidweekly.net/issues/issue-377)
 
 ## Presentation ##
 
@@ -39,13 +34,26 @@ What you got:
 
 ## How to use it? ##
 
-Make sure to include the library in your app's build.gradle:
+Step 1. add the JitPack repository to your ROOT build.gradle at the end of repositories:
 
 ```groovy
-    implementation 'com.lukelorusso:verticalseekbar:1.2.4'
-```  
+allprojects {
+    repositories {
+        ...
+        maven { url 'https://jitpack.io' }
+    }
+}
+```
 
-Add the view to your layout:
+Step 2. add the dependency:
+
+```groovy
+    implementation 'com.github.lukelorusso:VerticalSeekBar:1.2.5'
+```
+
+That's it!
+
+Now you can add the view to your layout:
 ```xml
 <com.lukelorusso.verticalseekbar.VerticalSeekBar
         android:layout_width="160dp"

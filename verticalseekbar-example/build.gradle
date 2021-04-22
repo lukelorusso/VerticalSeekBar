@@ -28,4 +28,7 @@ dependencies {
     implementation project(':verticalseekbar')
     implementation kotlinStdlib
     implementation androidXAppCompat
+
+    // DEPENDENCY CHECK STRATEGY
+    dependencyUpdates.resolutionStrategy dependencyUpdatesStrategy
 }
