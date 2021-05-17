@@ -48,7 +48,7 @@ allprojects {
 Step 2. add the dependency:
 
 ```groovy
-    implementation 'com.github.lukelorusso:VerticalSeekBar:1.2.6'
+    implementation 'com.github.lukelorusso:VerticalSeekBar:1.2.7'
 ```
 
 That's it!
