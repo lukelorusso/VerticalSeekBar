@@ -1,15 +1,16 @@
 allprojects {
     repositories {
         google()
-        jcenter()
+        mavenCentral()
+        gradlePluginPortal()
     }
 }
 
 ext {
 
     // APP VERSION
-    androidVersionCode          = 15
-    androidVersionName          = '1.2.5' // REMEMBER: also update README.md
+    androidVersionCode          = 16
+    androidVersionName          = '1.2.6' // REMEMBER: also update README.md
 
     // ANDROID VERSION
     androidMinSdkVersion        = 16
@@ -22,8 +23,7 @@ ext {
     kotlinStdlib                = "$kotlinStdlibGroupId:$kotlinStdlibArtifactId:$kotlinStdlibVersion"
 
     // ANDROID LIB
-    androidXVersion             = '1.2.0'
-    androidXAppCompat           = "androidx.appcompat:appcompat:$androidXVersion"
+    androidXAppCompat           = "androidx.appcompat:appcompat:1.2.0"
     cardViewGroupId             = "androidx.cardview"
     cardViewArtifactId          = "cardview"
     cardViewVersion             = '1.0.0'

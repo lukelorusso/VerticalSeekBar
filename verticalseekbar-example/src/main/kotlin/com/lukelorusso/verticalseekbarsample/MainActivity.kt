@@ -3,20 +3,22 @@ package com.lukelorusso.verticalseekbarsample
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.android.synthetic.main.activity_main.*
+import com.lukelorusso.verticalseekbarsample.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
+    private val binding by viewBinding(ActivityMainBinding::inflate)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(binding.root)
 
-        mainVerticalSeekBar.apply {
+        binding.mainVerticalSeekBar.apply {
             progress = 75
 
             setOnProgressChangeListener { progressValue ->
                 Log.d("VerticalSeekBar", "PROGRESS CHANGED at value: $progressValue")
-                mainProgressValue.text = progressValue.toString()
+                binding.mainProgressValue.text = progressValue.toString()
             }
 
             setOnPressListener { progressValue ->
@@ -28,7 +30,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        mainProgressValue.text = mainVerticalSeekBar.progress.toString()
+        binding.mainProgressValue.text = binding.mainVerticalSeekBar.progress.toString()
     }
 
 }
