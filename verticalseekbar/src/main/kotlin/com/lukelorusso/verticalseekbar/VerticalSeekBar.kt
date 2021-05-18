@@ -2,6 +2,7 @@
 
 package com.lukelorusso.verticalseekbar
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
@@ -9,13 +10,14 @@ import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
 import android.util.AttributeSet
 import android.util.DisplayMetrics
+import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.ImageView
 import androidx.cardview.widget.CardView
 import androidx.core.view.ViewCompat
-import kotlinx.android.synthetic.main.layout_verticalseekbar.view.*
+import com.lukelorusso.verticalseekbar.databinding.LayoutVerticalseekbarBinding
 import kotlin.math.max
 import kotlin.math.roundToInt
 
@@ -41,6 +43,24 @@ open class VerticalSeekBar @JvmOverloads constructor(
         INSIDE,
         MIDDLE
     }
+
+    private val binding = LayoutVerticalseekbarBinding.inflate(LayoutInflater.from(context))
+
+    // View
+    private val container
+        get() = binding.container
+    private val thumb
+        get() = binding.thumb
+    private val barCardView
+        get() = binding.barCardView
+    private val barBackground
+        get() = binding.barBackground
+    private val barProgress
+        get() = binding.barProgress
+    private val maxPlaceholder
+        get() = binding.maxPlaceholder
+    private val minPlaceholder
+        get() = binding.minPlaceholder
 
     private var onProgressChangeListener: ((Int) -> Unit)? = null
     private var onPressListener: ((Int) -> Unit)? = null
@@ -182,7 +202,8 @@ open class VerticalSeekBar @JvmOverloads constructor(
     }
 
     private fun init(context: Context, attrs: AttributeSet?) {
-        inflate(context, R.layout.layout_verticalseekbar, this)
+        removeAllViews()
+        addView(binding.root)
 
         if (attrs != null) {
             val attributes =
@@ -312,6 +333,7 @@ open class VerticalSeekBar @JvmOverloads constructor(
         px / (resources.displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
     //endregion
 
+    @SuppressLint("ClickableViewAccessibility")
     private fun applyAttributes() {
         if (initEnded) {
             initEnded = false // will be released at the end
