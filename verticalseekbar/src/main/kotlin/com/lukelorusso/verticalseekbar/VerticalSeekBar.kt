@@ -140,12 +140,25 @@ open class VerticalSeekBar @JvmOverloads constructor(
             field = value
             applyAttributes()
         }
+
+    /**
+     * Shows only if #thumbCustomView is not set.
+     */
     var thumbPlaceholderDrawable: Drawable? = null
         set(value) {
             field = value
             applyAttributes()
         }
     var useThumbToSetProgress = true
+        set(value) {
+            field = value
+            applyAttributes()
+        }
+
+    /**
+     * Thumb custom view. Hides #thumbPlaceholderDrawable if set.
+     */
+    var thumbCustomView: View? = null
         set(value) {
             field = value
             applyAttributes()
@@ -322,13 +335,17 @@ open class VerticalSeekBar @JvmOverloads constructor(
             } catch (ignored: NoSuchFieldError) {
             }
 
-
             var thumbPlaceholder: ImageView? = null // nullable for customization
             try {
                 thumbPlaceholder = thumb.findViewById(R.id.thumbPlaceholder)
             } catch (ignored: NoSuchFieldError) {
             }
 
+            var thumbCustomViewContainer: FrameLayout? = null // nullable for customization
+            try {
+                thumbCustomViewContainer = thumb.findViewById(R.id.thumbCustomContainer)
+            } catch (ignored: NoSuchFieldError) {
+            }
 
             // Customizing drawableCardView
             barCardView.layoutParams.width = barWidth ?: 0
@@ -361,7 +378,18 @@ open class VerticalSeekBar @JvmOverloads constructor(
                         + context.dpToPixel(1F)).roundToInt()
                 else 0
             if (showThumb) {
-                thumbPlaceholderDrawable?.also { thumbPlaceholder?.setImageDrawable(it) } // CANNOT be null
+                thumbPlaceholderDrawable?.also { // CANNOT be null
+                    if (thumbCustomView == null) {
+                        thumbPlaceholder?.setImageDrawable(it)
+                    } else {
+                        thumbPlaceholder?.setImageDrawable(null)
+                    }
+                }
+                thumbCustomView?.let { customView ->
+                    if (thumbCustomViewContainer?.childCount ?: 0 == 0) {
+                        thumbCustomViewContainer?.addView(customView)
+                    }
+                }
                 thumb.visibility = View.VISIBLE
                 val states = arrayOf(
                     intArrayOf(android.R.attr.state_enabled),  // enabled
